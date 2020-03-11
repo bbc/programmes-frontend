@@ -19,7 +19,7 @@
             "dial-agent"
         ],
         "conf": {
-            "comment": "We're targeting c5.large instances",
+            "comment": "We're targeting c5.xlarge instances",
             "front_controller": "index.php",
 
             "opcache.max_accelerated_files": 15926,
@@ -29,15 +29,15 @@
             "max_execution_time": 30,
             "fpm.mode": "dynamic",
             "fpm.process_idle_timeout": "10s",
-            "fpm.max_children": 65,
+            "fpm.max_children": 64,
             "fpm.start_servers": 32,
             "fpm.min_spare_servers": 16,
             "fpm.max_spare_servers": 32,
             "fpm.max_requests": 500,
             "fpm.listen_backlog": 1023,
             "nginx.worker_rlimit_nofile": 3000,
-            "nginx.worker_processes": 2,
-            "nginx.worker_connections": 1024,
+            "nginx.worker_processes": 4,
+            "nginx.worker_connections": 1592,
             "nginx.gzip_comp_level": 1,
             "nginx.gzip_experimental_config": true,
             "nginx.force_http_to_https_redirect": true,
