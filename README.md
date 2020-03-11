@@ -183,6 +183,22 @@ Release process
 ---------------------------------
 See [Release Process](docs/release-process.md)
 
+Known Issues
+---------------------------------
+There is an [issue](https://github.com/symfony/symfony/issues/34467) with a new version of Symfony Translations
+so we have locked the translations version to v4.3.2 but this is causing Symfony to be locked as well and we can't
+get new version of the framework. There is no easy solution but after expending some time
+investigating I found 2 options that could be consider in case of an update is required:
+
+1) Use symfony [ICU format.](https://symfony.com/doc/4.4/translation/message_format.html#pluralization)
+This requires to update the translations scripts and some PHP code as well.
+
+2) Implement our own translation system instead of using symfony one, this option could work by only
+updating PHP files and keep the existing .po files but with the downside of code becoming
+somehow complex and likely to introduce bug that we may not be able to notice for a while
+
+Both options are consider risky, code changes can be somehow complex and issues can go live unnoticed
+
 License
 -------
 
