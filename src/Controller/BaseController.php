@@ -117,14 +117,11 @@ abstract class BaseController extends AbstractController
     protected function getCanonicalUrl(): string
     {
         if (!isset($this->canonicalUrl)) {
-            $masterRequest = $this->container->get('request_stack')->getMasterRequest();
-            $scheme = $masterRequest->getScheme();
-            $host = $masterRequest->getHost();
-            $requestAttributes = $masterRequest->attributes;
-            $this->canonicalUrl = $scheme . '://' . $this->getBbcDomain($host) . $this->generateUrl(
+            $requestAttributes = $this->container->get('request_stack')->getMasterRequest()->attributes;
+            $this->canonicalUrl = $this->generateUrl(
                 $requestAttributes->get('_route'),
                 $requestAttributes->get('_route_params'),
-                UrlGeneratorInterface::ABSOLUTE_PATH
+                UrlGeneratorInterface::ABSOLUTE_URL
             );
         }
         return $this->canonicalUrl;
@@ -495,27 +492,5 @@ abstract class BaseController extends AbstractController
             return 'sounds';
         }
         return '';
-    }
-
-    /**
-     * Hacky function for canonical domain
-     */
-    private function getBbcDomain($host): string
-    {
-        if (is_string($host) && !empty($host)) {
-            if (stristr($host, 'sandbox.bbc')) {
-                return 'sandbox.bbc.co.uk';
-            }
-            if (stristr($host, 'int.bbc')) {
-                return 'www.int.bbc.co.uk';
-            }
-            if (stristr($host, 'test.bbc')) {
-                return 'www.test.bbc.co.uk';
-            }
-            if (stristr($host, 'stage.bbc')) {
-                return 'www.stage.bbc.co.uk';
-            }
-        }
-        return 'www.bbc.co.uk';
     }
 }
