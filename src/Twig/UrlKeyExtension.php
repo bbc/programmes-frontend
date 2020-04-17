@@ -115,7 +115,7 @@ class UrlKeyExtension extends AbstractExtension
         'cbeebies_radio' => '/cbeebies/radio',
         's4cpbs' => '/tv/s4c',
         'bbc_radio_one_vintage' => '/programmes/p059cwkn',
-        'bbc_radio_cymru_2' => '/radiocymru',
+        'bbc_radio_cymru_2' => '/radiocymru2',
         'bbc_sounds_podcasts' => true,
         'bbc_sounds_mixes' => true,
         'bbc_brasil' => true,
