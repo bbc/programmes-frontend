@@ -9,7 +9,7 @@ use App\ExternalApi\Ada\Service\AdaProgrammeService;
 use App\ExternalApi\Client\Factory\HttpApiClientFactory;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
-use BBC\ProgrammesPagesService\Service\ProgrammesService;
+use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Psr7\Response;
@@ -32,10 +32,10 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
         $thirdResponse = $this->createResponse([]);
         $mapper = $this->createMock(AdaProgrammeMapper::class);
         $mapper->expects($this->never())->method('mapItem');
-        $programmesService = $this->createMock(ProgrammesService::class);
-        $programmesService->expects($this->never())->method('findByPids');
+        $coreEntitiesService = $this->createMock(CoreEntitiesService::class);
+        $coreEntitiesService->expects($this->never())->method('findByPids');
 
-        $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $programmesService, $mapper);
+        $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $coreEntitiesService, $mapper);
 
         $promise = $service->findSuggestedByProgrammeItem($this->mockProgramme(), 10);
 
@@ -84,13 +84,16 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
             ->willReturn(
                 $this->createMock(AdaProgrammeItem::class)
             );
-        $programmesService = $this->createMock(ProgrammesService::class);
-        $programmesService->expects($this->once())
+        $coreEntitiesService = $this->createMock(CoreEntitiesService::class);
+        $coreEntitiesService->expects($this->once())
             ->method('findByPids')
             ->with([new Pid('b007rlb6'), new Pid('b007rlb4')])
-            ->willReturn([$this->mockProgramme('b007rlb6'), $this->mockProgramme('b007rlb6')]);
+            ->willReturn([
+                'b007rlb6' => $this->mockProgramme('b007rlb6'),
+                'b007rlb4' => $this->mockProgramme('b007rlb4'),
+            ]);
 
-        $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $programmesService, $mapper);
+        $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $coreEntitiesService, $mapper);
 
         $promise = $service->findSuggestedByProgrammeItem($this->mockProgramme(), 10);
 
@@ -129,13 +132,17 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
         ]);
         $mapper = $this->createMock(AdaProgrammeMapper::class);
         $mapper->expects($this->exactly(3))->method('mapItem')->willReturn($this->createMock(AdaProgrammeItem::class));
-        $programmesService = $this->createMock(ProgrammesService::class);
-        $programmesService->expects($this->once())
+        $coreEntitiesService = $this->createMock(CoreEntitiesService::class);
+        $coreEntitiesService->expects($this->once())
             ->method('findByPids')
             ->with([new Pid('b007rlb6'), new Pid('b007rlb5'), new Pid('b007rlb4')])
-            ->willReturn([$this->mockProgramme('b007rlb6'), $this->mockProgramme('b007rlb5'), $this->mockProgramme('b007rlb4')]);
+            ->willReturn([
+                'b007rlb6' => $this->mockProgramme('b007rlb6'),
+                'b007rlb5' => $this->mockProgramme('b007rlb5'),
+                'b007rlb4' => $this->mockProgramme('b007rlb4'),
+            ]);
 
-        $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $programmesService, $mapper);
+        $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $coreEntitiesService, $mapper);
 
         $promise = $service->findSuggestedByProgrammeItem($this->mockProgramme(), 3);
 
@@ -149,12 +156,12 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
     public function testInvalidResponseIsHandledAndNotCached()
     {
         $mapper = $this->createMock(AdaProgrammeMapper::class);
-        $programmesService = $this->createMock(ProgrammesService::class);
+        $coreEntitiesService = $this->createMock(CoreEntitiesService::class);
 
         $dudResponse = new Response(200, [], '"foo":"Bar"');
         $service = $this->service(
             $this->client([$dudResponse, $dudResponse, $dudResponse]),
-            $programmesService,
+            $coreEntitiesService,
             $mapper
         );
 
@@ -176,12 +183,12 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
     public function test500ErrorsAreHandledAndNotCached()
     {
         $mapper = $this->createMock(AdaProgrammeMapper::class);
-        $programmesService = $this->createMock(ProgrammesService::class);
+        $coreEntitiesService = $this->createMock(CoreEntitiesService::class);
 
         $dudResponse = new Response(500, [], '');
         $service = $this->service(
             $this->client([$dudResponse, $dudResponse, $dudResponse]),
-            $programmesService,
+            $coreEntitiesService,
             $mapper
         );
 
@@ -197,12 +204,12 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
     public function test404ErrorsAreHandledAndCached()
     {
         $mapper = $this->createMock(AdaProgrammeMapper::class);
-        $programmesService = $this->createMock(ProgrammesService::class);
+        $coreEntitiesService = $this->createMock(CoreEntitiesService::class);
 
         $dudResponse = new Response(404, [], '');
         $service = $this->service(
             $this->client([$dudResponse, $dudResponse, $dudResponse]),
-            $programmesService,
+            $coreEntitiesService,
             $mapper
         );
 
@@ -252,13 +259,17 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
         ], 1, 3);
         $mapper = $this->createMock(AdaProgrammeMapper::class);
         $mapper->expects($this->exactly(3))->method('mapItem')->willReturn($this->createMock(AdaProgrammeItem::class));
-        $programmesService = $this->createMock(ProgrammesService::class);
-        $programmesService->expects($this->once())
+        $coreEntitiesService = $this->createMock(CoreEntitiesService::class);
+        $coreEntitiesService->expects($this->once())
             ->method('findByPids')
             ->with([new Pid('b007rlb6'), new Pid('b007rlb5'), new Pid('b007rlb7')])
-            ->willReturn([$this->mockProgramme('b007rlb6'), $this->mockProgramme('b007rlb5'), $this->mockProgramme('b007rlb7')]);
+            ->willReturn([
+                'b007rlb6' => $this->mockProgramme('b007rlb6'),
+                'b007rlb5' => $this->mockProgramme('b007rlb5'),
+                'b007rlb7' => $this->mockProgramme('b007rlb7'),
+            ]);
 
-        $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $programmesService, $mapper);
+        $service = $this->service($this->client([$firstResponse, $secondResponse, $thirdResponse]), $coreEntitiesService, $mapper);
 
         $promise = $service->findSuggestedByProgrammeItem($this->mockProgramme(), 3);
 
@@ -275,23 +286,23 @@ class AdaProgrammeServiceTest extends BaseServiceTestCase
         $response = new Response(200, []);
 
         $mapper = $this->createMock(AdaProgrammeMapper::class);
-        $programmesService = $this->createMock(ProgrammesService::class);
+        $coreEntitiesService = $this->createMock(CoreEntitiesService::class);
 
         $fakeResponses = [
             'relatedByTag' => $response,
             'relatedByBrand' => $response,
             'relatedByCategory' => $response,
         ];
-        $this->invokeMethod($this->service($this->client([]), $programmesService, $mapper), 'parseAggregateResponses', [$fakeResponses, 3]);
+        $this->invokeMethod($this->service($this->client([]), $coreEntitiesService, $mapper), 'parseAggregateResponses', [$fakeResponses, 3]);
     }
 
-    private function service(ClientInterface $client, ProgrammesService $programmesService, AdaProgrammeMapper $mapper): AdaProgrammeService
+    private function service(ClientInterface $client, CoreEntitiesService $coreEntitiesService, AdaProgrammeMapper $mapper): AdaProgrammeService
     {
         return new AdaProgrammeService(
             new HttpApiClientFactory($client, $this->cache, $this->cacheWithResilience, $this->logger),
             'https://api.example.com/test',
             $mapper,
-            $programmesService
+            $coreEntitiesService
         );
     }
 

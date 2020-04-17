@@ -11,7 +11,7 @@ use BBC\ProgrammesCachingLibrary\CacheInterface;
 use BBC\ProgrammesPagesService\Domain\Entity\Programme;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeContainer;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Pid;
-use BBC\ProgrammesPagesService\Service\ProgrammesService;
+use BBC\ProgrammesPagesService\Service\CoreEntitiesService;
 use Closure;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
@@ -29,19 +29,19 @@ class AdaProgrammeService
     /** @var AdaProgrammeMapper */
     private $mapper;
 
-    /** @var ProgrammesService */
-    private $programmesService;
+    /** @var CoreEntitiesService */
+    private $coreEntitiesService;
 
     public function __construct(
         HttpApiClientFactory $clientFactory,
         string $baseUrl,
         AdaProgrammeMapper $mapper,
-        ProgrammesService $programmesService
+        CoreEntitiesService $coreEntitiesService
     ) {
         $this->clientFactory = $clientFactory;
         $this->baseUrl = $baseUrl;
         $this->mapper = $mapper;
-        $this->programmesService = $programmesService;
+        $this->coreEntitiesService = $coreEntitiesService;
     }
 
     public function findProgrammeItemsByClass(
@@ -166,17 +166,15 @@ class AdaProgrammeService
         foreach ($uniqueProgrammes as $uniqueProgramme) {
             $pids[] = new Pid($uniqueProgramme['pid']);
         }
-        // Collect all the Programmes objects from the Programmes service using the pids array
-        $programmeItems = $this->programmesService->findByPids($pids);
+
+        $programmeItems = $this->coreEntitiesService->findByPids($pids);
         $relatedProgrammes = [];
-        // in some cases $uniqueProgrammes may contain programmes non existing in $programmeItems so we have to filter them
         foreach ($uniqueProgrammes as $item) {
-            foreach ($programmeItems as $programmeItem) {
-                if ((string) $programmeItem->getPid() === $item['pid']) {
-                    $relatedProgrammes[] = $this->mapper->mapItem($programmeItem, $item);
-                }
+            if (isset($programmeItems[$item['pid']])) {
+                $relatedProgrammes[] = $this->mapper->mapItem($programmeItems[$item['pid']], $item);
             }
         }
+
         return $relatedProgrammes;
     }
 
@@ -189,15 +187,17 @@ class AdaProgrammeService
 
         $items = $data['items'];
 
-        $programmes = $this->programmesService->findByPids(array_map(function ($item) {
+        $programmes = $this->coreEntitiesService->findByPids(array_map(static function ($item) {
             return new Pid($item['pid']);
-        }, $items));
+        }, $items), 'Programme');
 
         $adaProgrammeItems = [];
-        for ($i = 0, $l = count($items); $i < $l; $i++) {
-            $adaProgrammeItems[] = $this->mapper->mapItem($programmes[$i], $items[$i]);
+        foreach ($items as $item) {
+            if (isset($programmes[$item['pid']])) {
+                $adaProgrammeItems[] = $this->mapper->mapItem($programmes[$item['pid']], $item);
+            }
         }
-        
+
         return $adaProgrammeItems;
     }
 
