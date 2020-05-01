@@ -38,7 +38,7 @@ class BreadcrumbHelper
 
     public function getNetworkBreadcrumb(?Network $network): Breadcrumb
     {
-        if ($network !== null) {
+        if ($network && !$network->isRadio()) {
             $urlKeyExtension = new UrlKeyExtension();
             $networkLink = $urlKeyExtension->networkLink($network);
             if ($networkLink !== '') {

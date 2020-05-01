@@ -137,17 +137,18 @@ class BroadcastNetworksHelper
 
         // Build list of network and the services from that network where the broadcast happened
         foreach ($collapsedBroadcast->getServices() as $service) {
-            if ($service->getNetwork()) {
-                $nid = (string) $service->getNetwork()->getNid();
+            $network = $service->getNetwork();
+            if ($network) {
+                $nid = (string) $network->getNid();
                 if (!array_key_exists($nid, $breakdowns)) {
                     $breakdowns[$nid] = [
-                        'network' => $service->getNetwork(),
+                        'network' => $network,
                         'on_services' => [],
                     ];
                 }
 
                 // If the service has the same name as the network, ignore it
-                if (strcasecmp($service->getShortName(), $service->getNetwork()->getName())) {
+                if (strcasecmp($service->getShortName(), $network->getName())) {
                     $breakdowns[$nid]['on_services'][(string) $service->getSid()] = $service;
                 }
             }

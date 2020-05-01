@@ -14,33 +14,26 @@ use App\DsShared\Helpers\LocalisedDaysAndMonthsHelper;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\Network;
 use BBC\ProgrammesPagesService\Domain\Entity\Service;
+use BBC\ProgrammesPagesService\Domain\Enumeration\NetworkMediumEnum;
+use BBC\ProgrammesPagesService\Domain\ValueObject\Nid;
 use BBC\ProgrammesPagesService\Domain\ValueObject\Sid;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use Symfony\Component\Translation\TranslatorInterface;
+use Tests\App\BaseTemplateTestCase;
 
-class BroadcastEventPresenterTest extends TestCase
+class BroadcastEventPresenterTest extends BaseTemplateTestCase
 {
     private $mockCollapsedBroadcast;
-    private $router;
     private $mockBroadcastNetworksHelper;
     private $mockLocalisedDaysAndMonthsHelper;
 
     public function setUp()
     {
-        $routeCollectionBuilder = new RouteCollectionBuilder();
-        $routeCollectionBuilder->add('/{networkUrlKey}', '', 'network');
-
-        $this->router = new UrlGenerator(
-            $routeCollectionBuilder->build(),
-            new RequestContext()
-        );
-
         $this->mockCollapsedBroadcast = $this->createMock(CollapsedBroadcast::class);
-        $this->mockBroadcastNetworksHelper = $this->createMock(BroadcastNetworksHelper::class);
+        $this->mockBroadcastNetworksHelper = new BroadcastNetworksHelper($this->createMock(TranslatorInterface::class));
         $this->mockLocalisedDaysAndMonthsHelper = $this->createMock(LocalisedDaysAndMonthsHelper::class);
     }
 
@@ -90,12 +83,11 @@ class BroadcastEventPresenterTest extends TestCase
         $dummy1 = $this->createMock(LocalisedDaysAndMonthsHelper::class);
         $dummy2 = $this->createMock(LiveBroadcastHelper::class);
         $dummy3 = $this->createMock(UrlGeneratorInterface::class);
-        $dummy4 = $this->createMock(TranslatorInterface::class);
 
         list($network1, $network2, $cBroadcasts) = $this->buildCBroadcastsWithNetworksAndServices();
         $cBroadcastEventPresenter = new BroadcastEventPresenter(
             $cBroadcasts,
-            new BroadcastNetworksHelper($dummy4),
+            $this->mockBroadcastNetworksHelper,
             $dummy1,
             $dummy2,
             $dummy3
@@ -116,7 +108,6 @@ class BroadcastEventPresenterTest extends TestCase
         $dummy1 = $this->createMock(LocalisedDaysAndMonthsHelper::class);
         $dummy2 = $this->createMock(LiveBroadcastHelper::class);
         $dummy3 = $this->createMock(UrlGeneratorInterface::class);
-        $dummy4 = $this->createMock(TranslatorInterface::class);
 
         $cBroadcasts = CollapsedBroadcastBuilder::any()->with(['services' => [
             ServiceBuilder::any()->build(),
@@ -126,7 +117,7 @@ class BroadcastEventPresenterTest extends TestCase
 
         $cBroadcastEventPresenter = new BroadcastEventPresenter(
             $cBroadcasts,
-            new BroadcastNetworksHelper($dummy4),
+            $this->mockBroadcastNetworksHelper,
             $dummy1,
             $dummy2,
             $dummy3
@@ -138,13 +129,33 @@ class BroadcastEventPresenterTest extends TestCase
         $this->assertNull($firstNetwork);
     }
 
+    public function testBroadcastNetworkLinks()
+    {
+        $routeCollectionBuilder = new RouteCollectionBuilder();
+        $routeCollectionBuilder->add('/{networkUrlKey}', '', 'network');
+        $router = new UrlGenerator($routeCollectionBuilder->build(), new RequestContext());
+
+        // Radio network should not link to NHP because radio hasn't
+        [, , $broadcast] = $this->buildCBroadcastsWithSpecificNetwork('bbc_radio_one', 'radio1', 'radio 1', NetworkMediumEnum::RADIO);
+        $presenter = $this->buildPresenterForBroadcast($broadcast, $router);
+        $c = $this->presenterCrawler($presenter);
+        $this->assertEquals(0, $c->filter('a')->count(), 'network should not be linked');
+
+        // TV network should link to NHP
+        [, , $broadcast] = $this->buildCBroadcastsWithSpecificNetwork('bbc_one', 'one', 'bbc one 1', NetworkMediumEnum::TV);
+        $presenter = $this->buildPresenterForBroadcast($broadcast, $router);
+        $c = $this->presenterCrawler($presenter);
+        $this->assertEquals(2, $c->filter('a')->count(), 'network should be linked');
+        $this->assertEquals(1, $c->filter('a>img')->count(), 'network logo should be linked');
+    }
+
     /**
      * Build watchable broadcast to exercise simulcast feature.
      *
      * @param Service[] $services
      * @param string $episodeType
      */
-    private function buildLiveBroadcastWith(array $services, string $episodeType = 'any') :CollapsedBroadcast
+    private function buildLiveBroadcastWith(array $services, string $episodeType = 'any'): CollapsedBroadcast
     {
         $episode = null;
         if ($episodeType == 'tv') {
@@ -162,7 +173,7 @@ class BroadcastEventPresenterTest extends TestCase
         ])->build();
     }
 
-    private function buildPresenterForBroadcast(CollapsedBroadcast $cBroadcast, $routerMock) :BroadcastEventPresenter
+    private function buildPresenterForBroadcast(CollapsedBroadcast $cBroadcast, $routerMock): BroadcastEventPresenter
     {
         return new BroadcastEventPresenter(
             $cBroadcast,
@@ -195,9 +206,25 @@ class BroadcastEventPresenterTest extends TestCase
         ];
     }
 
-    private function buildCBroadcastsWithNetworksAndServices() :array
+    private function buildCBroadcastsWithSpecificNetwork($nidStr, $urlKey, $name, $medium)
     {
-        $network1 = NetworkBuilder::any()->with(['services' => [
+        $method = ($medium === NetworkMediumEnum::RADIO) ? 'anyRadioService' : 'anyTVService';
+        $network = NetworkBuilder::any()->with([
+            'services' => [
+                ServiceBuilder::$method()->build(),
+                ServiceBuilder::$method()->build(),
+            ],
+            'medium' => $medium,
+            'name' => $name,
+            'urlKey' => $urlKey,
+            'nid' => new Nid($nidStr),
+        ])->build();
+        return $this->buildCBroadcastsWithNetworksAndServices($network);
+    }
+
+    private function buildCBroadcastsWithNetworksAndServices($specificNetwork = null): array
+    {
+        $network1 = $specificNetwork ?: NetworkBuilder::any()->with(['services' => [
             ServiceBuilder::anyTVService()->build(),
             ServiceBuilder::anyTVService()->build(),
         ],

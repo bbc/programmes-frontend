@@ -14,7 +14,7 @@
         <div class="broadcast-details__service">
             {%- for breakdown in details.getNetworksAndServicesDetails() -%}
                 {% if not loop.first and not loop.last %},&#32;{%- endif -%}
-                {% if loop.last and loop.length > 1 %}&#32;&&#32;{%- endif -%}
+                {% if loop.last and loop.length > 1 %}&#32;&amp;&#32;{%- endif -%}
                 {%- if network_link(breakdown.getNetwork()) -%}
                     <a class="gel-minion-bold" href="{{ network_link(breakdown.getNetwork()) }}">{{ breakdown.getNetworkName() }}</a>
                 {%- else -%}

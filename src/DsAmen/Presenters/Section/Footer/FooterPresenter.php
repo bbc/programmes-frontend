@@ -32,11 +32,8 @@ class FooterPresenter extends Presenter
 
     public function getNetworkUrlKey(): string
     {
-        // urlKey is nullable
-        if ($this->network && $this->network->getUrlKey()) {
-            return $this->network->getUrlKey();
-        }
-        return '';
+        $urlKey = $this->network ? $this->network->getUrlKey() : null;
+        return $urlKey ?: '';   // urlKey is nullable
     }
 
     public function getNetworkName(): string

@@ -56,7 +56,7 @@ abstract class BasePresenter
 
     /**
      * Get the base property that the twig template will be expecting
-     * to find it's variables under. Twig conventions say variable names should
+     * to find its variables under. Twig conventions say variable names should
      * use snake_case. So the "myExamplePresenter" presenter's variable name
      * would be "my_example"
      */

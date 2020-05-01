@@ -1,3 +1,4 @@
+{%- set network = footer.getNetwork()  -%}
 <div class="br-box-subtle text-base programmes-page programmes-page--flush" id="programmes-footer"><div class="footer-wrapper br-keyline">
     <div class="footer g-f-l">
         <h2 class="visually-hidden">{{ tr('related_content') }}</h2>
@@ -45,12 +46,22 @@
             <div class="grid grid--flush 1/2@bpw 1/4@bpw2 1/4@bpe">
                 {# 7194 #}
             </div>
-            {%- if footer.getNetwork() -%}
-                {%- if network_link(footer.getNetwork()) -%}
-                    <div class="grid grid--flush 1/2 1/6@bpw2 1/6@bpe footer__service centi"><div class="footer__service-island br-service-brand-box fauxcolumn">
-                        <a class="islet--vertical footer__service__logo text--center@bpw" href="{{ network_link(footer.getNetwork()) }}">
-                            <img alt="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}" src="{{ get_network_logo(footer.getNid(), '112x63') }}">
+            {%- if network -%}
+                {%- set network_logo = get_network_logo(footer.getNid(), '112x63') -%}
+                {%- set network_href = network_link(network) -%}
+                {%- set network_name = network.getName() -%}
+                {%- set has_homepage = network_href and not network.isRadio()  -%}
+
+                <div class="grid grid--flush 1/2 1/6@bpw2 1/6@bpe footer__service centi">
+                    <div class="footer__service-island br-service-brand-box fauxcolumn">
+                        {%- if has_homepage -%}
+                        <a class="islet--vertical footer__service__logo text--center@bpw" href="{{ network_href }}">
+                            <img alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
                         </a>
+                        {%- else -%}
+                            <img alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
+                        {%- endif -%}
+
                         <div class="footer__watch-live">
                             <div class="lazy-module" data-lazyload-inc="{{
                                 path('schedules_on_now', {
@@ -60,22 +71,24 @@
                             </div>
                         </div>
                     </div></div>
-                {%- endif -%}
+
+                {%- set nav_links = footer.getNavigationLinks()  -%}
                 <div class="grid grid--flush 1/2 1/6@bpw2 1/6@bpe footer__service-nav centi"><div class="footer__service__nav">
-                    {%- if network_link(footer.getNetwork()) or footer.getNavigationLinks() -%}
+                    {%- if has_homepage or nav_links -%}
                         <div class="br-service-brand-box--alt fauxcolumn">
                             <ul class="footer__service__nav__list list-unstyled footer__service-island">
-                                {%- if network_link(footer.getNetwork()) -%}
+                                {%- if has_homepage -%}
                                     <li class="footer__service__navitem">
-                                        <a href="{{ network_link(footer.getNetwork()) }}"
-                                            title="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}">
+                                        <a href="{{ network_href }}"
+                                            title="{{ tr('programme_homepage', { '%1': network_name }) }}">
                                             {{ tr('home') }}
                                         </a>
                                     </li>
                                 {%- endif -%}
-                                {%- for links in footer.getNavigationLinks() -%}
+
+                                {%- for link in nav_links -%}
                                     <li class="footer__service__navitem">
-                                        <a class="br-text" href="{{ links['url'] }}">{{ links['title'] }}</a>
+                                        <a class="br-text" href="{{ link['url'] }}">{{ link['title'] }}</a>
                                     </li>
                                 {%- endfor -%}
                             </ul>

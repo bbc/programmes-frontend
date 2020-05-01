@@ -1,17 +1,20 @@
+{%- set network = footer.getNetwork() -%}
+{%- set genres = footer.getGenres() -%}
+{%- set formats = footer.getFormats() -%}
 <div class="br-container br-box-subtle">
     <div class="p-g-p footer">
         <h2 class="invisible">{{ tr('related_content') }}</h2>
         <div class="grid grid--flush">
             <div class="grid__item 5/12@gel3b 1/2@gel3">
                 <!-- Similar programmes -->
-                {%- if footer.getGenres() or footer.getFormats() -%}
+                {%- if genres or formats -%}
                     <div class="islet--horizontal footer__programmes footer__service-island">
                         <h3 class="gel-double-pica-bold">{{ tr('similar_programmes') }}</h3>
-                        {%- if footer.getGenres() -%}
+                        {%- if genres -%}
                             <div class="islet--vertical">
                                 <h4 class="gel-brevier-bold text--shout">{{ tr('by_genre') }}:</h4>
                                 <ul class="list-raw list-unstyled text--shout gel-brevier-bold">
-                                    {%- for genreTree in footer.getGenres() -%}
+                                    {%- for genreTree in genres -%}
                                         <li>
                                             {%- for genre in genreTree.getAncestry() -%}
                                                 {%- if not loop.first -%}&#32;&#62;&#32;{%- endif -%}
@@ -25,11 +28,11 @@
                                 </ul>
                             </div>
                         {%- endif -%}
-                        {%- if footer.getFormats() -%}
+                        {%- if formats -%}
                             <div class="islet--vertical">
                                 <h4 class="gel-brevier-bold text--shout">{{ tr('by_format') }}:</h4>
                                 <ul class="list-raw list-unstyled text--shout gel-brevier-bold">
-                                    {%- for format in footer.getFormats() -%}
+                                    {%- for format in formats -%}
                                         <li>
                                             <a href="{{ path( 'category_metadata', {
                                                 'categoryType': 'formats',
@@ -47,43 +50,51 @@
                 {# 7194 #}
             </div>
             <!-- Watch live -->
-            {%- if footer.getNetwork() -%}
+            {%- if network -%}
+                {%- set network_href = network_link(network)  -%}
+                {%- set network_name = network.getName()  -%}
+                {%- set network_logo = get_network_logo(footer.getNid(), '112x63')  -%}
+                {%- set has_homepage = network_href and not network.isRadio()  -%}
                 <div class="grid__item 1/8@gel4 1/6@gel3b 1/2 footer__service">
-                    {%- if network_link(footer.getNetwork()) -%}
-                        <div class="br-service-brand-box">
-                            <div class="text--center">
-                                <a href="{{ network_link(footer.getNetwork()) }}">
-                                    <img alt="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}" src="{{ get_network_logo(footer.getNid(), '112x63') }}">
-                                </a>
-                            </div>
-                            <div class="hidden unhidden@gel3b island island--squashed">
-                                <div class="gel-brevier-bold lazy-module" data-lazyload-inc="{{
-                                path('schedules_on_now', {
-                                    'networkUrlKey': footer.getNetworkUrlKey(),
-                                    'partial': 'legacy_amen'
-                                }) }}" data-lazyload-threshold="768" data-lazyload-delay="true">
-                                </div>
+                    <div class="br-service-brand-box">
+                        <div class="text--center">
+                            {%- if has_homepage  -%}
+                            <a href="{{ network_href }}">
+                                <img alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
+                            </a>
+                            {%- else -%}
+                            <img alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
+                            {%- endif -%}
+                        </div>
+                        <div class="hidden unhidden@gel3b island island--squashed">
+                            <div class="gel-brevier-bold lazy-module" data-lazyload-inc="{{
+                            path('schedules_on_now', {
+                                'networkUrlKey': footer.getNetworkUrlKey(),
+                                'partial': 'legacy_amen'
+                            }) }}" data-lazyload-threshold="768" data-lazyload-delay="true">
                             </div>
                         </div>
-                    {%- endif -%}
+                    </div>
                 </div>
                 <!-- Map links-->
+                {%- set nav_links = footer.getNavigationLinks()  -%}
                 <div class="grid__item 1/8@gel4 1/6@gel3b 1/2 footer__service-nav ">
-                    {%- if network_link(footer.getNetwork()) or footer.getNavigationLinks() -%}
+                    {%- if has_homepage or nav_links -%}
                         <div class="island br-service-brand-box--alt">
                             <ul class="list-raw gel-long-primer-bold">
-                                {%- if network_link(footer.getNetwork()) -%}
-                                    <li class="footer-nav__item">
-                                        <a href="{{ network_link(footer.getNetwork()) }}"
-                                           title="{{ tr('programme_homepage', { '%1': footer.getNetworkName() }) }}">
-                                            {{ tr('home') }}
-                                        </a>
-                                    </li>
+                                {%- if has_homepage -%}
+                                <li class="footer-nav__item">
+                                    <a href="{{ network_href }}"
+                                       title="{{ tr('programme_homepage', { '%1': network_name }) }}">
+                                        {{ tr('home') }}
+                                    </a>
+                                </li>
                                 {%- endif -%}
-                                {%- for links in footer.getNavigationLinks() -%}
-                                    <li class="footer-nav__item">
-                                        <a href="{{ links['url'] }}">{{ links['title'] }}</a>
-                                    </li>
+
+                                {%- for link in nav_links -%}
+                                <li class="footer-nav__item">
+                                    <a href="{{ link['url'] }}">{{ link['title'] }}</a>
+                                </li>
                                 {%- endfor -%}
                             </ul>
                         </div>

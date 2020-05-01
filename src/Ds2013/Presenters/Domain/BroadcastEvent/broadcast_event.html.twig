@@ -12,7 +12,7 @@
     {%- if broadcast_event.getOption('show_logo') and broadcast_event.getMainBroadcastNetwork() is not null -%}
         {% set mainBroadcastNetwork = broadcast_event.getMainBroadcastNetwork() %}
         <div class="{{ network_image_classes }}">
-            {%- if network_link(mainBroadcastNetwork) -%}
+            {%- if network_link(mainBroadcastNetwork) and not mainBroadcastNetwork.isRadio() -%}
                 <a href="{{ network_link(mainBroadcastNetwork) }}" tabindex="-1"><img src="{{ get_network_logo(mainBroadcastNetwork.getNid(), '64x36') }}" alt="" width="64" height="36"/></a>
             {%- else -%}
                 <img src="{{ get_network_logo(mainBroadcastNetwork.getNid(), '64x36') }}" alt="" width="64" height="36"/>
@@ -30,13 +30,19 @@
         </div>
         <div class="programme__service box-link__elevated micro text--subtle">
             {%- for breakdown in broadcast_event.getNetworkBreakdown -%}
+                {%- set network_name = breakdown.getNetworkName() -%}
+                {%- set net = breakdown.getNetwork() -%}
+                {%- set has_homepage = net and network_link(net) and not net.isRadio() -%}
+
                 {% if not loop.first and not loop.last %},&#32;{%- endif -%}
-                {% if loop.last and loop.length > 1 %}&#32;&&#32;{%- endif -%}
-                {%- if breakdown.getNetwork() and network_link(breakdown.getNetwork()) -%}
-                    <a href="{{ network_link(breakdown.getNetwork()) }}">{{ breakdown.getNetworkName() }}</a>
+                {% if loop.last and loop.length > 1 %}&#32;&amp;&#32;{%- endif -%}
+
+                {%- if has_homepage -%}
+                <a href="{{ network_link(net) }}">{{ network_name }}</a>
                 {%- else -%}
-                    <span>{{ breakdown.getNetworkName() }}</span>
+                <span>{{ network_name }}</span>
                 {%- endif -%}
+
                 {%- if breakdown.getServicesNames() -%}
                     <span class="except"> {{ breakdown.getServicesNames() }}</span>
                 {%- endif -%}
