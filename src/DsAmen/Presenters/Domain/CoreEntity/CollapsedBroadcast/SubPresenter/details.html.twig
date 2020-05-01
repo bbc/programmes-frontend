@@ -13,13 +13,18 @@
         {# Service details #}
         <div class="broadcast-details__service">
             {%- for breakdown in details.getNetworksAndServicesDetails() -%}
+                {%- set network_name = breakdown.getNetworkName() -%}
+                {%- set net = breakdown.getNetwork() -%}
+                {%- set has_homepage = net and network_link(net) and not net.isRadio() -%}
                 {% if not loop.first and not loop.last %},&#32;{%- endif -%}
                 {% if loop.last and loop.length > 1 %}&#32;&amp;&#32;{%- endif -%}
-                {%- if network_link(breakdown.getNetwork()) -%}
-                    <a class="gel-minion-bold" href="{{ network_link(breakdown.getNetwork()) }}">{{ breakdown.getNetworkName() }}</a>
+
+                {%- if has_homepage -%}
+                <a href="{{ network_link(net) }}" class="gel-minion-bold">{{ network_name }}</a>
                 {%- else -%}
-                    <span class="gel-minion-bold">{{ breakdown.getNetworkName() }}</span>
+                <span class="gel-minion-bold">{{ network_name }}</span>
                 {%- endif -%}
+
                 {%- if breakdown.getServicesNames() -%}
                     {# The space before the services names below is necessary #}
                     <span> {{ breakdown.getServicesNames() }}</span>

@@ -5,6 +5,10 @@ namespace Tests\App\DsAmen\Presenters\Domain\CoreEntity\CollapsedBroadcast;
 
 use App\Builders\CollapsedBroadcastBuilder;
 use App\Builders\EpisodeBuilder;
+use App\Builders\MasterBrandBuilder;
+use App\Builders\NetworkBuilder;
+use App\Builders\ServiceBuilder;
+use App\DsAmen\Presenters\Domain\CoreEntity\Base\SubPresenter\BaseBodyPresenter;
 use App\DsAmen\Presenters\Domain\CoreEntity\CollapsedBroadcast\CollapsedBroadcastPresenter;
 use App\DsAmen\Presenters\Domain\CoreEntity\CollapsedBroadcast\SubPresenter\CtaPresenter;
 use App\DsAmen\Presenters\Domain\CoreEntity\CollapsedBroadcast\SubPresenter\DetailsPresenter;
@@ -19,9 +23,12 @@ use App\DsShared\Helpers\LiveBroadcastHelper;
 use BBC\ProgrammesPagesService\Domain\Entity\CollapsedBroadcast;
 use BBC\ProgrammesPagesService\Domain\Entity\ProgrammeItem;
 use BBC\ProgrammesPagesService\Domain\Enumeration\MediaTypeEnum;
-use PHPUnit_Framework_MockObject_MockObject;
+use BBC\ProgrammesPagesService\Domain\Enumeration\NetworkMediumEnum;
+use BBC\ProgrammesPagesService\Domain\ValueObject\Nid;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Translation\TranslatorInterface;
 use Tests\App\BaseTemplateTestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 class CollapsedBroadcastPresenterTest extends BaseTemplateTestCase
 {
@@ -30,6 +37,9 @@ class CollapsedBroadcastPresenterTest extends BaseTemplateTestCase
 
     /** @var HelperFactory|PHPUnit_Framework_MockObject_MockObject */
     private $mockHelperFactory;
+
+    /** @var BroadcastNetworksHelper  */
+    private $mockBroadcastNetworksHelper;
 
     /** @var CollapsedBroadcast|PHPUnit_Framework_MockObject_MockObject */
     private $mockCollapsedBroadcast;
@@ -42,10 +52,12 @@ class CollapsedBroadcastPresenterTest extends BaseTemplateTestCase
         $this->mockRouter = $this->createMock(UrlGenerator::class);
         $this->mockCollapsedBroadcast = $this->createMockCollapsedBroadcast();
 
+        $this->mockBroadcastNetworksHelper = new BroadcastNetworksHelper($this->createMock(TranslatorInterface::class));
+
         $this->mockHelperFactory  = $this->createMock(HelperFactory::class);
         $this->mockHelperFactory
             ->method('getBroadcastNetworksHelper')
-            ->willReturn($this->createMock(BroadcastNetworksHelper::class));
+            ->willReturn($this->mockBroadcastNetworksHelper);
     }
 
     public function testGetBodyPresenterReturnsInstanceOfSharedBodyPresenter(): void
@@ -107,6 +119,62 @@ class CollapsedBroadcastPresenterTest extends BaseTemplateTestCase
             $this->mockHelperFactory
         );
         $this->assertInstanceOf(DetailsPresenter::class, $cbPresenter->getDetailsPresenter());
+    }
+
+    public function testDetailsPresenterLinks()
+    {
+        $getDetailsPresenter = function ($broadcast): DetailsPresenter {
+            return (
+                new CollapsedBroadcastPresenter(
+                    $broadcast,
+                    $this->mockRouter,
+                    self::$translator,
+                    $this->mockHelperFactory,
+                    ['show_image' => true]
+                )
+            )->getDetailsPresenter();
+        };
+
+        // radio should not link to NHP
+        $broadcast = $this->buildCBroadcastWithNetwork('bbc_radio_one', 'radio1', 'radio 1', NetworkMediumEnum::RADIO);
+        $c = $this->presenterCrawler($getDetailsPresenter($broadcast));
+        $this->assertEquals(0, $c->filter('a')->count(), 'should have 0 links');
+
+        // TV should have NHP link
+        $broadcast = $this->buildCBroadcastWithNetwork('bbc_one', 'bbcone', 'bbc 1', NetworkMediumEnum::TV);
+        $c = $this->presenterCrawler($getDetailsPresenter($broadcast));
+        $this->assertEquals(1, $c->filter('a')->count(), 'should have 1 link');
+    }
+
+    public function testBodyPresenterLinks()
+    {
+        $getBodyPresenter = function ($broadcast): BaseBodyPresenter {
+            return (
+                new CollapsedBroadcastPresenter(
+                    $broadcast,
+                    $this->mockRouter,
+                    self::$translator,
+                    $this->mockHelperFactory,
+                    [
+                        'show_image' => true,
+                        'body_options' => [
+                            'show_synopsis' => true,
+                            'show_masterbrand' => true,
+                        ],
+                    ]
+                )
+            )->getBodyPresenter();
+        };
+
+        // radio should not link to NHP
+        $broadcast = $this->buildCBroadcastWithNetwork('bbc_radio_one', 'radio1', 'radio 1', NetworkMediumEnum::RADIO);
+        $c = $this->presenterCrawler($getBodyPresenter($broadcast));
+        $this->assertEquals(0, $c->filter('a')->count(), 'should have no NHP link');
+
+        // TV should have NHP link
+        $broadcast = $this->buildCBroadcastWithNetwork('bbc_one', 'bbcone', 'bbc 1', NetworkMediumEnum::TV);
+        $c = $this->presenterCrawler($getBodyPresenter($broadcast));
+        $this->assertEquals(1, $c->filter('a')->count(), 'should have 1 link');
     }
 
     public function testGetImagePresenterReturnsInstanceOfSharedImagePresenter(): void
@@ -268,5 +336,35 @@ class CollapsedBroadcastPresenterTest extends BaseTemplateTestCase
         $this->mockHelperFactory->expects($this->any())
             ->method('getLiveBroadcastHelper')
             ->willReturn($mockLiveBroadcastHelper);
+    }
+
+    private function buildCBroadcastWithNetwork($nidStr, $urlKey, $name, $medium)
+    {
+        $method = ($medium === NetworkMediumEnum::RADIO) ? 'anyRadioService' : 'anyTVService';
+        $network1 = NetworkBuilder::any()
+            ->with([
+                'services' => [
+                    ServiceBuilder::$method()->build(),
+                    ServiceBuilder::$method()->build(),
+                ],
+                'medium' => $medium,
+                'name' => $name,
+                'urlKey' => $urlKey,
+                'nid' => new Nid($nidStr),
+            ])
+            ->build();
+
+        return CollapsedBroadcastBuilder::any()
+            ->with([
+                'services' => [
+                    ServiceBuilder::any()->with(['network' => $network1])->build(),
+                ],
+                'programmeItem' => EpisodeBuilder::any()
+                    ->with([
+                        'masterBrand' => MasterBrandBuilder::any()->with(['network' => $network1])->build(),
+                    ])
+                    ->build(),
+            ])
+            ->build();
     }
 }

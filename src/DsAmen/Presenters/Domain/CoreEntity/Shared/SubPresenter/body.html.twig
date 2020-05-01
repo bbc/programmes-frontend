@@ -13,7 +13,12 @@
         {% endif %}
         {% if body.getDisplayMasterbrand() %}
             {% set network = body.getDisplayMasterbrand().getNetwork() %}
+            {% set has_homepage = network_link(network) and not network.isRadio() %}
+            {%- if has_homepage -%}
             <a href="{{ network_link(network) }}" class="programme__service media__meta-row gel-minion-bold">{{ network.getName() }}</a>
+            {%- else -%}
+            <b class="programme__service media__meta-row gel-minion-bold">{{ network.getName() }}</b>
+            {%- endif -%}
         {% endif %}
     </div>
 {% endif %}
