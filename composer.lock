@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35af5178582eeeea8da549b3ec9ac9ad",
+    "content-hash": "a54527ea6006c8f077507e5b118e1200",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -470,22 +470,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbc/programmes-pages-service.git",
-                "reference": "126e998c529ad40c1d2bb8ea51da170a49f1ce68"
+                "reference": "8c4e13d398665d4e19cc4033cffd55d84577f329"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbc/programmes-pages-service/zipball/126e998c529ad40c1d2bb8ea51da170a49f1ce68",
-                "reference": "126e998c529ad40c1d2bb8ea51da170a49f1ce68",
+                "url": "https://api.github.com/repos/bbc/programmes-pages-service/zipball/8c4e13d398665d4e19cc4033cffd55d84577f329",
+                "reference": "8c4e13d398665d4e19cc4033cffd55d84577f329",
                 "shasum": ""
             },
             "require": {
                 "bbc/doctrine-extensions": "^2.4.137",
                 "bbc/programmes-caching-library": "^1.1",
-                "doctrine/orm": "^2.5",
+                "doctrine/orm": "^2.6",
                 "php": ">=7.1.0",
                 "psr/cache": "^1.0",
                 "psr/log": "^1.0",
-                "symfony/stopwatch": "^3.2 | ^4.3"
+                "symfony/stopwatch": "^3.2 | ^4.3 | ^5.0"
             },
             "require-dev": {
                 "cakephp/chronos": "^1.1",
@@ -515,10 +515,10 @@
             ],
             "description": "A library for building /programmes pages",
             "support": {
-                "source": "https://github.com/bbc/programmes-pages-service/tree/master",
+                "source": "https://github.com/bbc/programmes-pages-service/tree/13.1.0",
                 "issues": "https://github.com/bbc/programmes-pages-service/issues"
             },
-            "time": "2019-11-06T11:42:55+00:00"
+            "time": "2020-02-11T10:20:56+00:00"
         },
         {
             "name": "behat/transliterator",
