@@ -43,8 +43,7 @@ define(['jquery-1.9', 'policy-service'], function($, policyService) {
             var matched_provider = this.getOEmbedProvider(this.url);
             if (!matched_provider) return null;
 
-            return this.generateCode(matched_provider, this.url);
-
+            this.generateCode(matched_provider, this.url);
         },
         getOEmbedProvider : function (url) {
             var providers_length = this.providers.length,
@@ -70,17 +69,22 @@ define(['jquery-1.9', 'policy-service'], function($, policyService) {
 
             return url;
         },
+        /** @async */
         generateCode : function (embedProvider, externalUrl) {
-            var policy = policyService.readPolicy('personalisation'); //functional cookie
-            if (policy === false) {
-                return;
-            }
+            var self = this;
+            policyService.readPolicy('personalisation')
+                .then(function(enabled) {
+                    // always render unless the user is logged in and has disabled it explicitly
+                    if (enabled === false) return;
 
-            if (embedProvider.templateRegex) {
-                return this.generateCodeFromTemplate(embedProvider, externalUrl);
-            }
-            return this.generateCodeFromRequest(embedProvider, externalUrl);
+                    return (embedProvider.templateRegex) ?
+                        self.generateCodeFromTemplate(embedProvider, externalUrl)
+                        :
+                        self.generateCodeFromRequest(embedProvider, externalUrl)
+                        ;
+                })
         },
+
         generateCodeFromRequest : function(embedProvider, externalUrl) {
             var _this = this,
                 requestUrl = this.getRequestUrl(embedProvider, externalUrl),

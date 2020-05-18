@@ -57,7 +57,6 @@ gulp.task('js', gulp.series('js:clean', function (done) {
             'bump-3': 'empty:',
             'snippets': 'snippet-player/snippets', // map snippet.js because is not in the "baseUrl"
             'playlister': 'snippet-player/', // map all the snippets folders
-            'idcta/idcta-1': 'empty:',
             'uasclient': 'empty:',  // required by UasService
             'relay-1': 'empty:', // required by UasClient
         },

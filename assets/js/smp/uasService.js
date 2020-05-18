@@ -1,4 +1,4 @@
-define(['jquery-1.9', 'idcta/idcta-1', 'uasclient'],function ($, idcta, UasClient) {
+define(['jquery-1.9', 'uasclient'],function ($, UasClient) {
     /**
      * Constructor the the UAS module
      * @constructor
@@ -22,12 +22,17 @@ define(['jquery-1.9', 'idcta/idcta-1', 'uasclient'],function ($, idcta, UasClien
         }, uasConfig);
 
         this.init = function() {
-            if (this.options.apiKey && userIsLoggedInAndHasTrackingEnabled()) {
-                var self = this;
-                self.active = true;
-                self.client = UasClient;
-                self.client.init(self.options);
-            }
+            if (!this.options.apiKey) return console.info('UAS: no apiKey');
+
+            var self = this;
+
+            bbcuser.getHashedId()
+                .then(function(hid) {
+                    if (!hid) return;
+                    self.active = true;
+                    self.client = UasClient;
+                    self.client.init(self.options);
+                });
         };
 
         this.notifyStarted = function(time) {
@@ -130,17 +135,6 @@ define(['jquery-1.9', 'idcta/idcta-1', 'uasclient'],function ($, idcta, UasClien
             });
 
             return deferred.promise();
-        };
-
-        var userIsLoggedInAndHasTrackingEnabled = function () {
-            if (idcta.hasCookie()) {
-                var userDetails = idcta.getUserDetailsFromCookie();
-                // for IDv4 the above method returns null. Remove the null check once IDv4 is history
-                if (userDetails == null || userDetails.ep) {
-                    return true;
-                }
-            }
-            return false;
         };
 
         /**
