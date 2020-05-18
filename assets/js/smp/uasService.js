@@ -30,9 +30,9 @@ define(['jquery-1.9', 'uasclient'],function ($, UasClient) {
                 .then(function(hid) {
                     if (!hid) return;
                     try {
+                        self.client = UasClient;
                         self.client.init(self.options);
                         self.active = true;
-                        self.client = UasClient;
                     } catch (e) {
                         window.console && console.error(e);
                     }
