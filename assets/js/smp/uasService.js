@@ -29,9 +29,13 @@ define(['jquery-1.9', 'uasclient'],function ($, UasClient) {
             bbcuser.getHashedId()
                 .then(function(hid) {
                     if (!hid) return;
-                    self.active = true;
-                    self.client = UasClient;
-                    self.client.init(self.options);
+                    try {
+                        self.client.init(self.options);
+                        self.active = true;
+                        self.client = UasClient;
+                    } catch (e) {
+                        window.console && console.error(e);
+                    }
                 });
         };
 
@@ -118,21 +122,26 @@ define(['jquery-1.9', 'uasclient'],function ($, UasClient) {
             }
 
             var deferred = $.Deferred();
-
-            self.client.create(uasData, function (err, res) {
-                if (err) {
-                    if (err.triggerRetry) {
-                        err.triggerRetry();
-                        return;
+            try {
+                self.client.create(uasData, function (err, res) {
+                    if (err) {
+                        if (err.triggerRetry) {
+                            err.triggerRetry();
+                            return;
+                        }
+                        deferred.reject(err);
+                        initCircuitBreaker();
+                    } else {
+                        deferred.resolve("success");
+                        self.active = true;
+                        self.failCount = 0;
                     }
-                    deferred.reject(err);
-                    initCircuitBreaker();
-                } else {
-                    deferred.resolve("success");
-                    self.active = true;
-                    self.failCount = 0;
-                }
-            });
+                });
+            } catch (e) {
+                window.console && console.error(e);
+                deferred.reject('uas error');
+            }
+
 
             return deferred.promise();
         };
