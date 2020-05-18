@@ -1,0 +1,37 @@
+{% extends 'base_ds2013.html.twig' %}
+
+{% block title %}JS User Test{% endblock %}
+
+{% block body %}
+    <div class="br-box-page">
+        <h1>Something something something dark side.</h1>
+
+        <script>
+            console.log('cookietests1 - window.bbccookies');
+            if (window.bbccookies !== undefined && window.bbccookies.cookiesEnabled()) {
+                console.log('Defined and enabled, policy=');
+                console.log(window.bbccookies.readPolicy('personalisation'));
+            } else {
+              console.log('Not Defined or not enabled');
+            }
+        </script>
+        <script>
+            function checkPersonalisation() {
+                console.log('cookietests2 - hashedID');
+                return window.bbcuser.getHashedId().then(function (hashedId) {
+                    console.log('HASHEDID=');
+                    console.log(hashedId);
+                    return hashedId ? true : false;
+                 }).catch(function (error) {
+                    console.error(error);
+                    return false;
+                })
+            };
+            var promEttre = checkPersonalisation();
+            promEttre.then(function (value) {
+              console.log('checkPersonalisation=');
+              console.log(value);
+            });
+        </script>
+    </div>
+{% endblock %}

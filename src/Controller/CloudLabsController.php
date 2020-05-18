@@ -46,6 +46,15 @@ class CloudLabsController extends BaseController
         return $this->renderWithChrome('cloud_labs/adverts.html.twig');
     }
 
+    public function jsUserAction(ProgrammesService $programmesService)
+    {
+        $programme = $programmesService->findByPidFull(new Pid('b006m86d'));
+        $this->setAtiContentLabels('wibble', 'wibble');
+        $this->setContextAndPreloadBranding($programme);
+
+        return $this->renderWithChrome('cloud_labs/js_user.html.twig');
+    }
+
     private function validActionNames(): array
     {
         // Valid actions are based upon the methods in this class that end
