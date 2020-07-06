@@ -199,16 +199,16 @@ class SmpPresenter extends Presenter
     {
         $cosmosEnv = $this->cosmosInfo->getAppEnvironment();
         $uasEnv = 'live';
-        $password = 'rt5uf8v9aol56';
+        $apiKey = 'rt5uf8v9aol56';  // used as-is in frontend on advice of UAS
 
         if ($cosmosEnv !== 'live') {
             // V2 set "test" environment even for sandbox.
             $uasEnv = 'test';
-            $password = 'bapd63mcqopnp';
+            $apiKey = 'bapd63mcqopnp';
         }
 
         return [
-            'apiKey' => $password,
+            'apiKey' => $apiKey,
             'env' => $uasEnv,
             'pid' => (string) $this->programmeItem->getPid(),
             'versionPid' => (string) $this->streamableVersion->getPid(),
