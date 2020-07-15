@@ -35,7 +35,7 @@ class ResponseSubscriber implements EventSubscriberInterface
         // Always add the following headers to vary on, so that differences in
         // these headers are cached separately. Add these to any already
         // existing value rather than overwriting.
-        $response->setVary(['X-CDN', 'X-BBC-Edge-Scheme'], false);
+        $response->setVary(['X-CDN'], false);
 
         // X-UA-Compatible header choose what version of Internet Explorer the page should be rendered as.
         // Only affects IE8, 9 and 10
