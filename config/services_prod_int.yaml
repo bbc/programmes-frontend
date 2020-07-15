@@ -5,7 +5,7 @@ parameters:
     app.electron.baseurl: 'https://api.test.bbc.co.uk/electron'
     app.isite.baseurl: 'https://api.test.bbc.co.uk/isite2-content-reader'
     app.ada.baseurl: 'https://ada.test.api.bbci.co.uk'
-    app.recipes.baseurl: 'https://api.test.bbc.co.uk/food/recipes'
+    app.recipes.baseurl: 'https://food-api-proxy.test.tools.bbc.co.uk/recipes'
     app.morph.baseurl: 'https://morph.test.api.bbci.co.uk'
     app.sounds_nav.baseurl: 'https://sounds-nav.int.api.bbci.co.uk/json'
 
