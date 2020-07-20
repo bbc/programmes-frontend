@@ -62,6 +62,7 @@
                             <img alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
                         {%- endif -%}
 
+                        {% if footer.getNetworkUrlKey() %}
                         <div class="footer__watch-live">
                             <div class="lazy-module" data-lazyload-inc="{{
                                 path('schedules_on_now', {
@@ -70,6 +71,7 @@
                                 }) }}" data-lazyload-threshold="768" data-lazyload-delay="true">
                             </div>
                         </div>
+                        {%- endif -%}
                     </div></div>
 
                 {%- set nav_links = footer.getNavigationLinks()  -%}
