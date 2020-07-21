@@ -19,11 +19,8 @@ if ! (php --version | grep -q "PHP 7.") ; then
     exit 1
 fi
 
-# copy the certificate from aws parameter store so we can use cosmos-release inside CodeBuild
-# this is a temporal solution until we have an official way to provide CodeBuild with certs
-echo $BBC_CERTIFICATE | base64 --decode > /etc/pki/tls/certs/client.crt
-echo $BBC_CERTIFICATE_KEY | base64 --decode > /etc/pki/tls/private/client.key
-echo $COSMOS_REQUIRED_CA | base64 --decode >> /etc/pki/tls/certs/ca-bundle.crt
+# https://github.com/bbc/certee-fetch/
+certee-fetch
 
 echo "Validating Cosmos dials..."
 cosmos-release check-dials
@@ -51,7 +48,7 @@ fi
 # install composer for production
 export SYMFONY_ENV=prod;
 export APP_ENV=prod;
-composer --no-ansi --no-interaction --no-dev --optimize-autoloader --prefer-dist install
+sudo /usr/local/bin/composer --no-ansi --no-interaction --no-dev --optimize-autoloader --prefer-dist install
 
 # Some directories are not required in the RPM so we can empty them
 rm -rf var/* docs/* tests/*

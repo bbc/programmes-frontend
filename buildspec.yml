@@ -3,9 +3,6 @@ version: 0.2
 env:
   parameter-store:
       OAUTH: "OAUTH_TOKEN"
-      BBC_CERTIFICATE: "BBC_CERTIFICATE"
-      BBC_CERTIFICATE_KEY: "BBC_CERTIFICATE_KEY"
-      COSMOS_REQUIRED_CA: "COSMOS_REQUIRED_CA"
 
 phases:
   build:
