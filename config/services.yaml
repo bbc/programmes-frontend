@@ -30,7 +30,7 @@ parameters:
     app.isite.baseurl: 'https://api.live.bbc.co.uk/isite2-content-reader'
     app.isite.article_service.class: App\ExternalApi\Isite\Service\ArticleService
     app.isite.profile_service.class: App\ExternalApi\Isite\Service\ProfileService
-    app.recipes.baseurl: 'https://api.live.bbc.co.uk/food/recipes'
+    app.recipes.baseurl: 'https://food-api-proxy.tools.bbc.co.uk/recipes'
     app.recipes.service.class: App\ExternalApi\Recipes\Service\RecipesService
     app.morph.baseurl: 'https://morph.api.bbci.co.uk'
     app.LxPromo.service.lxpromo.class: App\ExternalApi\LxPromo\Service\LxPromoService
