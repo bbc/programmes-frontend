@@ -10,3 +10,4 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         voteaccountwrapperurl: '%app.vote.accountwrapperurl%'
+        branding: '%branding%'

@@ -56,10 +56,10 @@
                     <div class="footer__service-island br-service-brand-box fauxcolumn">
                         {%- if has_homepage -%}
                         <a class="islet--vertical footer__service__logo text--center@bpw" href="{{ network_href }}">
-                            <img alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
+                            <img class="service-logo" alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
                         </a>
                         {%- else -%}
-                            <img alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
+                            <img class="service-logo" alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
                         {%- endif -%}
 
                         {% if footer.getNetworkUrlKey() %}

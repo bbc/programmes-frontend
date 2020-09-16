@@ -60,10 +60,10 @@
                         <div class="text--center">
                             {%- if has_homepage  -%}
                             <a href="{{ network_href }}">
-                                <img alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
+                                <img class="service-logo" alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
                             </a>
                             {%- else -%}
-                            <img alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
+                                <img class="service-logo" alt="{{ tr('programme_homepage', { '%1': network_name }) }}" src="{{ network_logo }}">
                             {%- endif -%}
                         </div>
                         {% if footer.getNetworkUrlKey() %}

@@ -19,3 +19,8 @@ $ie: true;
 .block-link__overlay-link {
     background: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
 }
+
+// prevent incorrect aspect ratio scaling with SVGs on IE only
+.footer__service__logo img[src$='.svg'] {
+    width: 100%;
+}
