@@ -39,6 +39,7 @@ parameters:
                     "bbc_radio_wiltshire",
                     "bbc_wm",
                     "bbc_radio_york",
+                    "bbc_radio_scotland",
                     "bbc_local_radio"
                     ]
                 png: [
@@ -66,7 +67,6 @@ parameters:
                     "bbc_radio_nan_gaidheal",
                     "bbc_radio_one",
                     "bbc_radio_one_vintage",
-                    "bbc_radio_scotland",
                     "bbc_radio_three",
                     "bbc_radio_two",
                     "bbc_radio_two_country",
