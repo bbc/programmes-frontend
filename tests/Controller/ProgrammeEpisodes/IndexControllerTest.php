@@ -47,7 +47,7 @@ class IndexControllerTest extends BaseWebTestCase
     public function testRedirectIsCachedFor600Seconds()
     {
         $this->client->request('GET', '/programmes/b006q2x0/episodes');
-        $this->assertHasRequiredResponseHeaders($this->client, 'max-age=600, public');
+        $this->assertHasRequiredResponseHeaders($this->client, 'max-age=600, public, stale-while-revalidate=30');
     }
 
     public function testEpisodesAZredirect()

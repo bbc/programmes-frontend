@@ -108,6 +108,8 @@ abstract class BaseController extends AbstractController
         // It is required to set the cache-control header when creating the response object otherwise Symfony
         // will create and set its value to "no-cache, private" by default
         $this->response()->setPublic()->setMaxAge(120);
+        // Sets a grace period during which stale content may be served by BBC GTM Cache
+        $this->response()->headers->addCacheControlDirective('stale-while-revalidate', '30');
         // The page can only be displayed in a frame on the same origin as the page itself.
         $this->response()->headers->set('X-Frame-Options', 'SAMEORIGIN');
         // Blocks a request if the requested type is different from the MIME type

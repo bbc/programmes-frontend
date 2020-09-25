@@ -17,7 +17,7 @@ class ExceptionControllerTest extends BaseWebTestCase
         // The test page for all errors, always returns a 200 status
         $this->assertResponseStatusCode($client, 200);
 
-        $this->assertHasRequiredResponseHeaders($client, 'max-age=60, public');
+        $this->assertHasRequiredResponseHeaders($client, 'max-age=60, public, stale-while-revalidate=30');
 
         $this->assertEquals(
             'Sorry, that page was not found',

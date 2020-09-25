@@ -26,13 +26,11 @@ abstract class BaseWebTestCase extends WebTestCase
         $this->assertEquals($expectedLocation, $client->getResponse()->headers->get('location'));
     }
 
-    public function assertHasRequiredResponseHeaders($client, $cacheControl = 'max-age=120, public', $contentLanguage = null)
+    public function assertHasRequiredResponseHeaders($client, $cacheControl = 'max-age=120, public, stale-while-revalidate=30', $contentLanguage = null)
     {
         $this->assertEquals($cacheControl, $client->getResponse()->headers->get('Cache-Control'));
         $this->assertArraySubset(['X-CDN'], $client->getResponse()->getVary());
         $this->assertEquals('IE=edge', $client->getResponse()->headers->get('X-UA-Compatible'));
-        $this->assertEquals('programmes-frontend', $client->getResponse()->headers->get('X-Webapp'));
-        $this->assertEquals('stale-while-revalidate=30', $client->getResponse()->headers->get('X-Cache-Control'));
         if (isset($contentLanguage)) {
             $this->assertEquals($contentLanguage, $client->getResponse()->headers->get('Content-Language'));
         } else {

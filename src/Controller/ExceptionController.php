@@ -89,7 +89,7 @@ class ExceptionController extends BaseExceptionController
 
         // In production, cache 4xx error codes for a little while
         if (!$showException && $code >= 400 && $code <= 499) {
-            $headers['Cache-Control'] = 'public, max-age=60';
+            $headers['Cache-Control'] = 'public, max-age=60, stale-while-revalidate=30';
         }
 
         // The 200 status here is a misnomer, it is a default and shall be
