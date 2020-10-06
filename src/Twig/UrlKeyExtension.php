@@ -72,6 +72,7 @@ class UrlKeyExtension extends AbstractExtension
         'bbc_radio_northampton' => true,
         'bbc_radio_nottingham' => true,
         'bbc_radio_one' => true,
+        'bbc_radio_one_dance' => true,
         'bbc_radio_oxford' => true,
         'bbc_radio_scotland' => true,
         'bbc_radio_scotland_music_extra' => '/programmes/p04d9wfq',

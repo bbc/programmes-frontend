@@ -23,7 +23,6 @@ class HomeController extends BaseController
         'p02yxy62' => true, // BBC World Service US Public Radio
         'p00hwfhp' => true, // BBC WORLD NEWS Americas
         'p00fzlgd' => true, // Radio 10
-        'p080kbtk' => true, // BBC Radio 1 Dance
 
         // World Service
         'p05b8bdk' => true, // Amharic
