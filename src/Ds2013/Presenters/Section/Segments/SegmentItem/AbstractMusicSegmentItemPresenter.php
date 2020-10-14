@@ -74,10 +74,6 @@ abstract class AbstractMusicSegmentItemPresenter extends AbstractSegmentItemPres
 
     public function getImageUrl(): string
     {
-        if ($this->segment->getMusicRecordId()) {
-            return 'https://www.bbc.co.uk/music/images/records/96x96/' . $this->segment->getMusicRecordId();
-        }
-
         if ($this->getPrimaryContribution() && $this->getPrimaryContribution()->getContributor()->getMusicBrainzId()) {
             return 'https://ichef.bbci.co.uk/music/images/artists/96x96/' . $this->getPrimaryContribution()->getContributor()->getMusicBrainzId() . '.jpg';
         }

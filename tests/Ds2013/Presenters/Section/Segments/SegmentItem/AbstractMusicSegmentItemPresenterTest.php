@@ -148,15 +148,6 @@ class AbstractMusicSegmentItemPresenterTest extends TestCase
         $this->assertSame('4 minutes ago', $stub->getTiming());
     }
 
-    public function testRecordIdImage()
-    {
-        $segment = MusicSegmentBuilder::any()->with(['musicRecordId' => 'recordId'])->build();
-        $segmentEvent = SegmentEventBuilder::any()->with(['segment' => $segment])->build();
-        $stub = $this->getPresenter($this->mockContext, $segmentEvent, 'anything', null);
-
-        $this->assertSame('https://www.bbc.co.uk/music/images/records/96x96/recordId', $stub->getImageUrl());
-    }
-
     public function testMusicBrainzImage()
     {
         $contributor = ContributorBuilder::any()->with(['musicBrainzId' => 'something'])->build();

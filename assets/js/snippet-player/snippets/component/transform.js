@@ -35,13 +35,14 @@ define([
 
         /**
          * get an array of IDs of <bbc-snippet> elements found on page and process them
+         * @param {function?} cb callback to pass to this.replace
          */
-        process: function() {
+        process: function(cb) {
             var recordIds = Array.prototype.slice.call(document.querySelectorAll('bbc-snippet'))
                 .map(getRecordIdFromSnippet)
                 .filter(Boolean);
             if (!recordIds.length) return;
-            this.request(recordIds, this.replace);
+            this.request(recordIds, (function(data) { this.replace(data, cb) }).bind(this));
         },
 
         /**
@@ -65,16 +66,19 @@ define([
         /**
          * replace <bbc-snippet> placeholders with rendered HTML
          * @param {array} snippets
+         * @param {function?} cb
          */
-        replace: function(snippets) {
+        replace: function(snippets, cb) {
             if (!snippets) return;
             snippets.forEach(function (snippet) {
                 var snip = getSnippetFromRecordId(snippet.id);
                 if (!snip) return console.error('id ' + id + ', but snippet not found?');
 
                 var el = document.createElement('div');
-                el.innerHTML = snippet.html;
+                // el.innerHTML = snippet.html;     // #7343
+
                 snip.parentElement.replaceChild(el, snip);
+                if (cb) cb(el, snippet)
             });
         }
     };

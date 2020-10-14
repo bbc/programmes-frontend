@@ -498,7 +498,7 @@ define([
                 inited = true;
             }
 
-            transform.process();
+            transform.process(opts.renderCallback);
 
             if (this.config.getFullPlayback()) {
                 priv.fullPlayback = true;

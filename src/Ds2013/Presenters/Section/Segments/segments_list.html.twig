@@ -8,6 +8,14 @@
     {% set pid = ctx.getPid() %}
     <script>
         require(["snippets", "bump-3"], function(snippets, bump) {
+            var hiDPI = ('devicePixelRatio' in window) && (window.devicePixelRatio > 1);
+            var nulldiv = document.createElement('div')
+            function imgSrcFromSnippet(snippet) {
+                nulldiv.innerHTML = snippet.html
+                if (!nulldiv.children) return ''
+                if (!nulldiv.children[0].dataset) return ''
+                return nulldiv.children[0].dataset.imageSrc || ''
+            }
             snippets.init({
                 theme: "music-track",
                 base_url: '/programmes/snippet',
@@ -23,6 +31,27 @@
                     sessionLabels: {
                         bbc_site: '{{ destination }}',
                         playlist_type: 'segments',
+                    }
+                },
+                // use Tupac's response to replace the thumbnails as we don't get them mapped from PIPs
+                renderCallback: function(el, snippet) {
+                    var src = imgSrcFromSnippet(snippet)
+                    if (!src) return
+
+                    // break on first element that isn't a DIV
+                    while (el && (el.tagName.toUpperCase() === 'DIV')) {
+                        el = el.parentNode
+                    }
+
+                    // replace the recipe with 192x192 for retina displays
+                    if (hiDPI) src = src.replace('/96x96/', '/192x192/')
+
+                    var img = el.querySelector('img.image')
+                    if (img.classList.contains('lazyload')) {
+                        img.src = '';
+                        img.dataset.src = src
+                    } else {
+                        img.src = src
                     }
                 }
             }, bump);

@@ -7,7 +7,8 @@
 
 <li class="segments-list__item {{ music.getIdentifyingClass() }} {{ music.getOption('moreless_class') }}">
     <div class="segment segment--music">
-        <div class="segment__content segment--withbuttons">
+        <bbc-snippet data-record-id="{{ music.getSegment().getMusicRecordId() }}"></bbc-snippet>
+        <div class="segment__content">
             <div class="segment__artist-image">
                 <img class="image lazyload" data-src="{{ music.getImageUrl() }}" alt="">
             </div>
@@ -81,11 +82,6 @@
                         {% endif %}
                     </ul>
                 {% endif %}
-            </div>
-        </div>
-        <div class="segment__buttons">
-            <div class="segment__button segment__button--snippet">
-                <bbc-snippet data-record-id="{{ music.getSegment().getMusicRecordId() }}"></bbc-snippet>
             </div>
         </div>
     </div>
