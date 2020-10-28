@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a54527ea6006c8f077507e5b118e1200",
+    "content-hash": "373fc858efd2c057b4f34f0fc51cdccb",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -224,16 +224,16 @@
         },
         {
             "name": "bbc/branding-client",
-            "version": "4.0.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbc/branding-client.git",
-                "reference": "4c25f0030b4f42df94e69e6bf5c46a325d32b71f"
+                "reference": "80796484a961e61f1d656b47a5ee6d23d38f5c60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbc/branding-client/zipball/4c25f0030b4f42df94e69e6bf5c46a325d32b71f",
-                "reference": "4c25f0030b4f42df94e69e6bf5c46a325d32b71f",
+                "url": "https://api.github.com/repos/bbc/branding-client/zipball/80796484a961e61f1d656b47a5ee6d23d38f5c60",
+                "reference": "80796484a961e61f1d656b47a5ee6d23d38f5c60",
                 "shasum": ""
             },
             "require": {
@@ -265,10 +265,10 @@
             ],
             "description": "PHP Branding client",
             "support": {
-                "source": "https://github.com/bbc/branding-client/tree/4.0.0",
+                "source": "https://github.com/bbc/branding-client/tree/4.1.0",
                 "issues": "https://github.com/bbc/branding-client/issues"
             },
-            "time": "2019-11-20T14:04:51+00:00"
+            "time": "2020-10-27T14:10:52+00:00"
         },
         {
             "name": "bbc/doctrine-extensions",
@@ -8184,5 +8184,6 @@
     "platform-dev": [],
     "platform-overrides": {
         "php": "7.3.10"
-    }
+    },
+    "plugin-api-version": "1.1.0"
 }
