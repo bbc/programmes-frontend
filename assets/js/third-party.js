@@ -174,7 +174,7 @@ define(['jquery-1.9', 'policy-service'], function($, policyService) {
         providers : [
             /* Flickr have currently broken their oEmbed API in Chrome and IE */
             /*new Provider("flickr", "photo", ["flickr\\.com/photos/.+","flic\\.kr/p/.+"], "http://flickr.com/services/oembed",{callbackparameter:'jsoncallback'}),*/
-            new Provider("instagram", "rich", ["instagr\\.?am(\\.com)?/.+"], "https://graph.facebook.com/v8.0/instagram_oembed?access_token=3693890007336150%7C25561916b38fe91a65c09d23dc81a858", {
+            new Provider("instagram", "rich", ["instagr\\.?am(\\.com)?/.+"], "https://graph.facebook.com/v8.0/instagram_oembed?access_token=2635578666704177%7C3328a16269cb548b497ec0c03c676494", {
                 format: 'json',
                 dataType: 'json'
             }),
