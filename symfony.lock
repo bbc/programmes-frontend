@@ -200,6 +200,9 @@
     "phar-io/version": {
         "version": "1.0.1"
     },
+    "php": {
+        "version": "7.3.10"
+    },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
     },

@@ -224,16 +224,16 @@
         },
         {
             "name": "bbc/branding-client",
-            "version": "4.1.0",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbc/branding-client.git",
-                "reference": "80796484a961e61f1d656b47a5ee6d23d38f5c60"
+                "reference": "af569d9811ac13e7d852d707be1c3e8c27942eab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbc/branding-client/zipball/80796484a961e61f1d656b47a5ee6d23d38f5c60",
-                "reference": "80796484a961e61f1d656b47a5ee6d23d38f5c60",
+                "url": "https://api.github.com/repos/bbc/branding-client/zipball/af569d9811ac13e7d852d707be1c3e8c27942eab",
+                "reference": "af569d9811ac13e7d852d707be1c3e8c27942eab",
                 "shasum": ""
             },
             "require": {
@@ -265,10 +265,10 @@
             ],
             "description": "PHP Branding client",
             "support": {
-                "source": "https://github.com/bbc/branding-client/tree/4.1.0",
+                "source": "https://github.com/bbc/branding-client/tree/4.2.0",
                 "issues": "https://github.com/bbc/branding-client/issues"
             },
-            "time": "2020-10-27T14:10:52+00:00"
+            "time": "2020-11-03T11:17:49+00:00"
         },
         {
             "name": "bbc/doctrine-extensions",
@@ -1882,6 +1882,7 @@
             "keywords": [
                 "reflection"
             ],
+            "abandoned": "roave/better-reflection",
             "time": "2018-06-14T14:45:07+00:00"
         },
         {
@@ -1986,6 +1987,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2018-07-12T10:23:15+00:00"
         },
         {
@@ -3646,32 +3648,32 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.4.5",
+            "version": "v1.9.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "4467ab35c82edebac58fe58c22cea166a805eb1f"
+                "reference": "7335ec033995aa34133e621627333368f260b626"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/4467ab35c82edebac58fe58c22cea166a805eb1f",
-                "reference": "4467ab35c82edebac58fe58c22cea166a805eb1f",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/7335ec033995aa34133e621627333368f260b626",
+                "reference": "7335ec033995aa34133e621627333368f260b626",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0",
-                "php": "^7.0"
+                "composer-plugin-api": "^1.0|^2.0",
+                "php": ">=7.1"
             },
             "require-dev": {
-                "composer/composer": "^1.0.2",
-                "symfony/dotenv": "^3.4|^4.0",
-                "symfony/phpunit-bridge": "^3.4.19|^4.1.8",
-                "symfony/process": "^2.7|^3.0|^4.0"
+                "composer/composer": "^1.0.2|^2.0",
+                "symfony/dotenv": "^4.4|^5.0",
+                "symfony/phpunit-bridge": "^4.4|^5.0",
+                "symfony/process": "^3.4|^4.4|^5.0"
             },
             "type": "composer-plugin",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-main": "1.9-dev"
                 },
                 "class": "Symfony\\Flex\\Flex"
             },
@@ -3691,7 +3693,7 @@
                 }
             ],
             "description": "Composer plugin for Symfony",
-            "time": "2019-07-19T08:59:18+00:00"
+            "time": "2020-10-14T17:41:54+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -7079,6 +7081,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2017-11-27T05:48:46+00:00"
         },
         {
