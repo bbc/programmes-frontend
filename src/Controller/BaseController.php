@@ -270,6 +270,7 @@ abstract class BaseController extends AbstractController
             'page' => $atiAnalyticsLabelsValues->orbLabels(),
             'searchScope' => $this->orbitSearchScope,
             'skipLinkTarget' => 'programmes-content',
+            'enableAds' => true,
         ]);
 
         $structuredDataHelper = $this->container->get(StructuredDataHelper::class);
