@@ -1,0 +1,48 @@
+{
+    "logos": {
+        "filetypes": {
+            "svg": [
+                "bbc_one",
+                "bbc_radio_one_dance"
+            ],
+            "png": [
+                "bbc_7",
+                "bbc_alba"
+            ]
+        },
+        "styles": {
+            "bbc_one": {
+                "bg_color": "#EA2923"
+            },
+            "bbc_alba": {
+                "bg_color": "#003167",
+                "width": "101px"
+            },
+            "bbc_radio_one_dance": {
+                "bg_color": "#1E1E1E",
+                "fg_color": "#ffffff"
+            },
+            "bbc_7": {
+                "bg_color": "#ffb700",
+                "width": "101px",
+                "mobile_width": "68px"
+            }
+        }
+    },
+    "manifest": {
+        "images/logos/112x63/bbc.png": "images/logos/112x63/bbc-31337.png",
+        "images/logos/112x63/bbc_7.png": "images/logos/112x63/bbc_7-cd1213294d.png",
+        "images/logos/112x63/bbc_alba.png": "images/logos/112x63/bbc_alba-86d406c9e3.png",
+        "images/logos/64x36/bbc.png": "images/logos/64x36/bbc-1337.png",
+        "images/logos/64x36/bbc_7.png": "images/logos/64x36/bbc_7-65c6638d9c.png",
+        "images/logos/64x36/bbc_alba.png": "images/logos/64x36/bbc_alba-23d8a96ed1.png",
+        "images/logos/svg/bbc_one/masthead.svg": "images/logos/svg/bbc_one/masthead-4859e89e19.svg",
+        "images/logos/svg/bbc_one/service.svg": "images/logos/svg/bbc_one/service-13d7290601.svg",
+        "images/logos/svg/bbc_radio_one_dance/masthead.svg": "images/logos/svg/bbc_radio_one_dance/masthead-d0b957c9cc.svg",
+        "images/logos/svg/bbc_radio_one_dance/service.svg": "images/logos/svg/bbc_radio_one_dance/service-d0b957c9cc.svg",
+        "images/logos/x36/bbc_7.png": "images/logos/x36/bbc_7-71a48535da.png",
+        "images/logos/x36/bbc_alba.png": "images/logos/x36/bbc_alba-cf0f24d374.png",
+        "images/logos/x56/bbc_7.png": "images/logos/x56/bbc_7-d0a0a14593.png",
+        "images/logos/x56/bbc_alba.png": "images/logos/x56/bbc_alba-8bf4b089cf.png"
+    }
+}

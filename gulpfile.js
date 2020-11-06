@@ -11,8 +11,6 @@ const requirejsOptimize = require('gulp-requirejs-optimize');
 const autoprefixer = require('gulp-autoprefixer');
 const override = require('gulp-rev-css-url');
 const gulpif = require('gulp-if');
-const yaml = require('js-yaml')
-const fs = require('fs')
 
 const staticPathSrc = 'assets';
 const staticPathDist = 'web/assets';
@@ -121,55 +119,21 @@ gulp.task('images', gulp.series('images:clean', function() {
 // ------
 
 gulp.task('rev:clean', () => Promise.all([
-    // @todo clean rev-logos for env
     del([manifestPath.join('/')]),
-    del([`${staticPathDist}/rev-manifest.json`]),
-    del([`${staticPathDist}/rev-logos.json`])
+    del([`${staticPathDist}/rev-manifest.json`])
 ]));
 
-
-gulp.task('rev:logoconfig', function(done) {
-    const srcManifest = './resources/rev-manifest.json'
-    const srcConfig = './config/packages/branding.yaml'
-    const destPath = staticPathDist + '/logoconfig.next'
-    const dest = destPath + '/rev-logos.json'
-    try {
-        const manifest = JSON.parse(fs.readFileSync(srcManifest))
-        const logoconfig = yaml.safeLoad(fs.readFileSync(srcConfig)).parameters.branding
-
-        // filter assets manifest and copy to rev-logos
-        logoconfig.manifest = {}
-        Object.keys(manifest)
-            .filter(key => key.startsWith('images/'))
-            .forEach(key => logoconfig.manifest[key] = manifest[key])
-
-        if (!fs.existsSync(destPath))
-            fs.mkdirSync(destPath);
-
-        fs.writeFile(
-            dest,
-            JSON.stringify(logoconfig, null, '\t'),
-            done
-        )
-    }
-    catch (e) {
-        console.error(e)
-    }
-})
-
 gulp.task('rev', gulp.series('rev:clean', gulp.parallel('sass', 'images', 'js'), function() {
-        return gulp.src([staticPathDist + '/**/*'])
-            .pipe(rev())
-            .pipe(override())
-            .pipe(gulp.dest(staticPathDist))
-            .pipe(revdelOriginal()) // delete no-revised file
-            .pipe(rev.manifest({
-                path: manifestPath[1]
-            }))
-            .pipe(gulp.dest(manifestPath[0]))
-    },
-    'rev:logoconfig')
-);
+    return gulp.src([staticPathDist + '/**/*'])
+        .pipe(rev())
+        .pipe(override())
+        .pipe(gulp.dest(staticPathDist))
+        .pipe(revdelOriginal()) // delete no-revised file
+        .pipe(rev.manifest({
+            path: manifestPath[1]
+        }))
+        .pipe(gulp.dest(manifestPath[0]))
+}));
 
 /*
  * Entry tasks

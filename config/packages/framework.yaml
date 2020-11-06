@@ -5,6 +5,9 @@ framework:
     http_method_override: false
     assets:
         base_path: 'assets'
+        packages:
+            logos:
+                version_strategy: 'App\Branding\LogoVersionStrategy'
     php_errors:
         log: true
     cache:

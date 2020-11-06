@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\EventSubscriber;
 
+use App\Branding\LogoVersionStrategy;
 use BBC\BrandingClient\BrandingClient;
 use BBC\BrandingClient\OrbitClient;
 use BBC\ProgrammesCachingLibrary\Cache;
@@ -28,7 +29,7 @@ class CacheFlushSubscriber implements EventSubscriberInterface, ServiceSubscribe
 
     public static function getSubscribedServices()
     {
-        return [BrandingClient::class, OrbitClient::class, Cache::class, CacheWithResilience::class, MorphClient::class];
+        return [LogoVersionStrategy::class, BrandingClient::class, OrbitClient::class, Cache::class, CacheWithResilience::class, MorphClient::class];
     }
 
     public function __construct(ContainerInterface $container)
@@ -51,6 +52,9 @@ class CacheFlushSubscriber implements EventSubscriberInterface, ServiceSubscribe
 
             $morphCache = $this->container->get(MorphClient::class);
             $morphCache->setFlushCacheItems(true);
+
+            $logosVersions = $this->container->get(LogoVersionStrategy::class);
+            $logosVersions->flushCache();
         }
     }
 }

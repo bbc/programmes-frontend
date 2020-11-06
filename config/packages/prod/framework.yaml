@@ -3,3 +3,6 @@ framework:
         json_manifest_path: '%kernel.project_dir%/resources/rev-manifest.json'
         base_path: ~
         base_url: ['https://programmes.files.bbci.co.uk/programmes-frontend']
+        packages:
+            logos:
+                version_strategy: 'App\Branding\LogoVersionStrategy'

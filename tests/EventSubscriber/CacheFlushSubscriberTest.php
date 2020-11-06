@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Tests\App\EventSubscriber;
 
+use App\Branding\LogoVersionStrategy;
 use App\EventSubscriber\CacheFlushSubscriber;
 use BBC\ProgrammesCachingLibrary\Cache;
 use BBC\ProgrammesCachingLibrary\CacheWithResilience;
@@ -25,11 +26,15 @@ class CacheFlushSubscriberTest extends TestCase
         $morph = $this->createMock(MorphClient::class);
         $morph->expects($this->once())->method('setFlushCacheItems')->with(true);
 
+        $logoVersionMock = $this->createMock(LogoVersionStrategy::class);
+        $logoVersionMock->expects($this->once())->method('flushCache');
+
         $container = $this->createMock(ContainerInterface::class);
         $container->method('get')->will($this->returnValueMap([
             [Cache::class, $cache],
             [CacheWithResilience::class, $cacheWithResilience],
             [MorphClient::class, $morph],
+            [LogoVersionStrategy::class, $logoVersionMock],
         ]));
 
         $request = new Request(['__flush_cache' => '']);

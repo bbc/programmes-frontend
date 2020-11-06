@@ -17,3 +17,4 @@ parameters:
         - '#Static property Tests\\App\\BaseTemplateTestCase::.*does not accept object#'
     excludes_analyse:
         - *ContactControllerTest.php
+        - *NetworkLogoExtensionTest.php

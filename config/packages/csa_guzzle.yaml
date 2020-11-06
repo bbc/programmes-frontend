@@ -15,3 +15,4 @@ csa_guzzle:
                 verify: false
                 timeout: 60
                 connect_timeout: 10
+                force_ip_resolve: 'v4'

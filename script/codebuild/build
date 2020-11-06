@@ -70,8 +70,7 @@ mbt -r 7 -s rpmbuild -v ${version}
 # SVGs are copied in a separate step below as their mime type must be explicitly specified
 
 echo "Publishing assets..."
-aws s3 sync web/assets s3://$STATIC_ASSETS_BUCKET/programmes-frontend --exclude="*.svg" --cache-control "public, max-age=31622400, immutable"
-aws s3 sync web/assets s3://$STATIC_ASSETS_BUCKET/programmes-frontend --include="*.svg" --content-type="image/svg+xml" --cache-control "public, max-age=31622400, immutable"
+aws s3 sync web/assets s3://$STATIC_ASSETS_BUCKET/programmes-frontend --cache-control "public, max-age=31622400, immutable"
 
 echo 'COSMOS-RELEASE: Sending RPM to cosmos.....'
 cosmos-release service programmes-frontend RPMS/*.rpm --release-version v

@@ -51,6 +51,11 @@ parameters:
     # the resilient redis cache layer
     app.cache.resilient_cache_time: 21600
 
+    app.logos.version_strategy.class: App\Branding\LogoVersionStrategy
+    app.logos.base_url: https://programmes.files.bbci.co.uk/programmes-frontend
+    # How long to cache the dynamic S3 asset manifest. also see services_dev
+    app.logos.cache.ttl: 600
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -83,6 +88,17 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Branding\LogoVersionStrategy:
+        class: '%app.logos.version_strategy.class%'
+        arguments:
+            - '@csa_guzzle.client.default'
+            - '@cache.logos_cache'
+            - '@logger'
+            - '%app.logos.base_url%'
+            - 'rev-logos.$env$.json'
+            - '@App\ValueObject\CosmosInfo'
+            - '%app.logos.cache.ttl%'
 
     App\DsShared\Helpers\TitleLogicHelper:
         factory: 'App\DsShared\Factory\HelperFactory:getTitleLogicHelper'
@@ -146,6 +162,13 @@ services:
 
     cache.null_provider:
         class: Symfony\Component\Cache\Adapter\NullAdapter
+
+    cache.logos_cache:
+        class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+        arguments:
+            - 'logos'
+            - '%app.logos.cache.ttl%'
+            - '%kernel.cache_dir%'
 
     # we need an instance of RedisCluster, default Redis class doesn't support cluster mode.
     # RedisCluster class support most Redis operations
