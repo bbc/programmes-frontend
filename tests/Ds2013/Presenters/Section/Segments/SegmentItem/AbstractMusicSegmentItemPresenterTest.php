@@ -148,20 +148,6 @@ class AbstractMusicSegmentItemPresenterTest extends TestCase
         $this->assertSame('4 minutes ago', $stub->getTiming());
     }
 
-    public function testMusicBrainzImage()
-    {
-        $contributor = ContributorBuilder::any()->with(['musicBrainzId' => 'something'])->build();
-        $contribution = ContributionBuilder::any()->with(['contributor' => $contributor])->build();
-        $segmentEvent = SegmentEventBuilder::any()->build();
-        // @TODO can I refactor the below?
-        $stub = $this->getPresenter($this->mockContext, $segmentEvent, 'anything', null);
-        $stub->expects($this->any())
-            ->method('getPrimaryContribution')
-            ->willReturn($contribution);
-
-        $this->assertSame('https://ichef.bbci.co.uk/music/images/artists/96x96/something.jpg', $stub->getImageUrl());
-    }
-
     public function testDefaultImage()
     {
         $segmentEvent = SegmentEventBuilder::any()->build();
@@ -171,7 +157,7 @@ class AbstractMusicSegmentItemPresenterTest extends TestCase
             ->method('getPrimaryContribution')
             ->willReturn(null);
 
-        $this->assertSame('https://ichef.bbci.co.uk/images/ic/96x96/p01c9cjb.png', $stub->getImageUrl());
+        $this->assertSame('https://ichef.bbci.co.uk/images/ic/96x96/p01c9cjb.png', $stub->getImagePlaceholderUrl());
     }
 
     /**

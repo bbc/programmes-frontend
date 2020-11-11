@@ -72,12 +72,8 @@ abstract class AbstractMusicSegmentItemPresenter extends AbstractSegmentItemPres
         return 'Clip';
     }
 
-    public function getImageUrl(): string
+    public function getImagePlaceholderUrl(): string
     {
-        if ($this->getPrimaryContribution() && $this->getPrimaryContribution()->getContributor()->getMusicBrainzId()) {
-            return 'https://ichef.bbci.co.uk/music/images/artists/96x96/' . $this->getPrimaryContribution()->getContributor()->getMusicBrainzId() . '.jpg';
-        }
-
         return 'https://ichef.bbci.co.uk/images/ic/96x96/p01c9cjb.png';
     }
 
