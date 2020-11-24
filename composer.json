@@ -30,7 +30,7 @@
         "bbc-rmp/cloudwatch-monitoringhandler": "^1.0",
         "bbc-rmp/comscore": "^1.1.0",
         "bbc-rmp/translate": "^1.8",
-        "bbc/branding-client": "^v4.2.0",
+        "bbc/branding-client": "^4.3.0",
         "bbc/gel-iconography-assets": "^2.0",
         "bbc/programmes-caching-library": "^1.1.6",
         "bbc/programmes-morph-library": "^2.0",
