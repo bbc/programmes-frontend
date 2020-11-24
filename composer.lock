@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "373fc858efd2c057b4f34f0fc51cdccb",
+    "content-hash": "45d0486da53091794f6c92aa45452c14",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -224,16 +224,16 @@
         },
         {
             "name": "bbc/branding-client",
-            "version": "4.2.0",
+            "version": "4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bbc/branding-client.git",
-                "reference": "af569d9811ac13e7d852d707be1c3e8c27942eab"
+                "reference": "a0c19234875188ff3c83f37b1a86764107598b08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bbc/branding-client/zipball/af569d9811ac13e7d852d707be1c3e8c27942eab",
-                "reference": "af569d9811ac13e7d852d707be1c3e8c27942eab",
+                "url": "https://api.github.com/repos/bbc/branding-client/zipball/a0c19234875188ff3c83f37b1a86764107598b08",
+                "reference": "a0c19234875188ff3c83f37b1a86764107598b08",
                 "shasum": ""
             },
             "require": {
@@ -265,10 +265,10 @@
             ],
             "description": "PHP Branding client",
             "support": {
-                "source": "https://github.com/bbc/branding-client/tree/4.2.0",
+                "source": "https://github.com/bbc/branding-client/tree/4.3.0",
                 "issues": "https://github.com/bbc/branding-client/issues"
             },
-            "time": "2020-11-03T11:17:49+00:00"
+            "time": "2020-11-23T13:44:40+00:00"
         },
         {
             "name": "bbc/doctrine-extensions",
@@ -1882,7 +1882,6 @@
             "keywords": [
                 "reflection"
             ],
-            "abandoned": "roave/better-reflection",
             "time": "2018-06-14T14:45:07+00:00"
         },
         {
@@ -1987,7 +1986,6 @@
                 "faker",
                 "fixtures"
             ],
-            "abandoned": true,
             "time": "2018-07-12T10:23:15+00:00"
         },
         {
