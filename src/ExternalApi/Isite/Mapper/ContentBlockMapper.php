@@ -350,7 +350,7 @@ class ContentBlockMapper extends Mapper
                 break;
             case 'idt-quiz':
                 $quizId = $this->getString($form->content->idt_id);
-                $htmlContent = $this->idtQuizService->getQuizContentPromise($quizId)->wait();
+                $htmlContent = $this->idtQuizService->getQuizLink($quizId);
 
                 $contentBlock = new Quiz(
                     $this->getString($form->content->title),

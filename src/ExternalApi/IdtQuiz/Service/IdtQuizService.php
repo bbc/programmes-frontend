@@ -42,6 +42,13 @@ class IdtQuizService
         return $client->makeCachedPromise();
     }
 
+    public function getQuizLink(string $quizId)
+    {
+        $link = filter_var($this->getQuizUrl($quizId), FILTER_SANITIZE_URL);
+
+        return sprintf('<a class="idt-quiz-link" href="%s" target="_blank" rel="noopener">Start quiz</a>', $link);
+    }
+
     private function parseResponse(array $responses): string
     {
         if (count($responses) <= 0) {
@@ -54,7 +61,7 @@ class IdtQuizService
     private function getQuizUrl(string $quizId): string
     {
         return sprintf(
-            '%s/indepthtoolkit/quizzes/%s/syndicated',
+            '%s/indepthtoolkit/quizzes/%s/app',
             $this->smallproxEndpoint,
             urlencode($quizId)
         );
