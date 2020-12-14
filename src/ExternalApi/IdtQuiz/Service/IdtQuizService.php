@@ -42,11 +42,12 @@ class IdtQuizService
         return $client->makeCachedPromise();
     }
 
-    public function getQuizLink(string $quizId)
+    /**
+     * DATCAP-136: returning deprecated content warning as IDT quizzes are no longer available
+     */
+    public function getDeprecatedContentWarning()
     {
-        $link = filter_var($this->getQuizUrl($quizId), FILTER_SANITIZE_URL);
-
-        return sprintf('<a class="idt-quiz-link" href="%s" target="_blank" rel="noopener">Start quiz</a>', $link);
+        return '<p>This content is no longer available</p>';
     }
 
     private function parseResponse(array $responses): string
