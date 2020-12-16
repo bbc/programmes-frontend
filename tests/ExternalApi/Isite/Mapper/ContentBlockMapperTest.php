@@ -70,22 +70,6 @@ class ContentBlockMapperTest extends TestCase
      */
     public function testMappingQuizObject($xml, $quizId, $htmlContent)
     {
-        $promiseMock = $this
-            ->getMockBuilder(Promise::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['wait'])
-            ->getMock();
-
-        $promiseMock
-            ->expects($this->once())
-            ->method('wait')
-            ->willReturn($htmlContent);
-
-        $this->idtQuizService
-            ->expects($this->once())
-            ->method('getQuizContentPromise')
-            ->with($this->equalTo($quizId))
-            ->willReturn($promiseMock);
 
         /** @var Quiz $block */
         $block = $this->mapper->getDomainModel($xml);
@@ -100,7 +84,7 @@ class ContentBlockMapperTest extends TestCase
             'data_in_quiz.xml' => [
                 'xml-element' => new SimpleXMLElement(file_get_contents(__DIR__ . '/quiz.xml')),
                 'quiz-id' => '1234',
-                'html-content' => 'This is just mock quiz content',
+                'html-content' => '<p>Sorry, this quiz is no longer available.</p>',
             ],
         ];
     }

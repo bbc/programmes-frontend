@@ -42,6 +42,14 @@ class IdtQuizService
         return $client->makeCachedPromise();
     }
 
+    /**
+     * DATCAP-136: returning deprecated content warning as IDT quizzes are no longer available
+     */
+    public function getDeprecatedContentWarning()
+    {
+        return '<p>Sorry, this quiz is no longer available.</p>';
+    }
+
     private function parseResponse(array $responses): string
     {
         if (count($responses) <= 0) {
@@ -54,7 +62,7 @@ class IdtQuizService
     private function getQuizUrl(string $quizId): string
     {
         return sprintf(
-            '%s/indepthtoolkit/quizzes/%s/syndicated',
+            '%s/indepthtoolkit/quizzes/%s/app',
             $this->smallproxEndpoint,
             urlencode($quizId)
         );
