@@ -84,7 +84,7 @@ class ContentBlockMapperTest extends TestCase
             'data_in_quiz.xml' => [
                 'xml-element' => new SimpleXMLElement(file_get_contents(__DIR__ . '/quiz.xml')),
                 'quiz-id' => '1234',
-                'html-content' => '<p>This content is no longer available</p>',
+                'html-content' => '<p>Sorry, this quiz is no longer available.</p>',
             ],
         ];
     }

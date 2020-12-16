@@ -47,7 +47,7 @@ class IdtQuizService
      */
     public function getDeprecatedContentWarning()
     {
-        return '<p>This content is no longer available</p>';
+        return '<p>Sorry, this quiz is no longer available.</p>';
     }
 
     private function parseResponse(array $responses): string
