@@ -74,6 +74,12 @@ class EpisodesFixtures extends AbstractFixture implements DependentFixtureInterf
             $this->buildEpisode('p3000004', 'B1-S2-S1-E2', $this->getReference('b000sr21'))
         );
 
+        // Episodes in non-indexed brand
+        $this->addReference(
+            'p3n0s301',
+            $this->buildEpisode('p3n0s301', 'No SEO brand episode', $this->getReference('b006pfjx'))
+        );
+
         $this->addReference(
             'b013pqnm',
             $this->buildEpisode('b013pqnm', 'B1-S2-S1-E3', $this->getReference('b000sr21'), [], ['recipes_enabled' => true])

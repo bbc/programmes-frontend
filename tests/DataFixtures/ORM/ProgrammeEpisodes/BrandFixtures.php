@@ -42,6 +42,9 @@ class BrandFixtures extends AbstractFixture implements DependentFixtureInterface
         $this->buildBrand('b004jt40', 'B3', ['C00070'], 1);
         $this->buildBrand('b004jt41', 'B4', ['C00070'], 0);
 
+        $noSeoBrand = $this->buildBrand('b006pfjx', 'B3', []);
+        $this->addReference('b006pfjx', $noSeoBrand);
+
         $this->manager->flush();
     }
 

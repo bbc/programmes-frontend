@@ -180,6 +180,22 @@ class EpisodeController extends BaseController
             ->forEntityAncestry($episode)
             ->toArray();
 
+        // Deindex episode pages for specified TV brands (SEO experiment)
+        // https://jira.dev.bbc.co.uk/browse/DATCAP-181
+        $noIndexBrands = [
+            'b006pfjx', // North West Tonight
+            'b007t9y1', // Match of the Day
+            'p00yzlr0', // Line of Duty
+            'p070npjv', // Fleabag
+            'b006v5y2', // Saturday Kitchen
+            'b006mgyl', // BBC News
+            'm000lxp1', // Powering Britain
+            'b08s3bgz',  // Impossible
+        ];
+        if (in_array($episode->getTleo()->getPid(), $noIndexBrands)) {
+            $this->metaNoIndex = true;
+        }
+
         return $this->renderWithChrome('find_by_pid/episode.html.twig', $parameters);
     }
 
