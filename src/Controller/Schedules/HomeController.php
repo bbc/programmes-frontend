@@ -23,6 +23,7 @@ class HomeController extends BaseController
         'p02yxy62' => true, // BBC World Service US Public Radio
         'p00hwfhp' => true, // BBC WORLD NEWS Americas
         'p00fzlgd' => true, // Radio 10
+        'p093xs25' => true, // Radio 1 extension (DELETE ME FOR DATCAP-158)
         'p090dlbj' => true, // Radio Bradford
         'p092zvsg' => true, // Radio Sunderland
         'p092zvw8' => true, // Radio Wolverhampton
