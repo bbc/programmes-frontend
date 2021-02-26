@@ -47,6 +47,7 @@ class LiveBroadcastHelper
         'bbc_radio_one'                         => ['playspace_live', ['sid' => 'bbc_radio_one']],
         'bbc_radio_one_vintage'                 => ['playspace_live', ['sid' => 'bbc_radio_one_vintage']],
         'bbc_radio_one_dance'                   => ['playspace_live', ['sid' => 'bbc_radio_one_dance']],
+        'bbc_radio_one_relax'                   => ['playspace_live', ['sid' => 'bbc_radio_one_relax']],
         'bbc_1xtra'                             => ['playspace_live', ['sid' => 'bbc_1xtra']],
         'bbc_radio_two'                         => ['playspace_live', ['sid' => 'bbc_radio_two']],
         'bbc_radio_three'                       => ['playspace_live', ['sid' => 'bbc_radio_three']],
