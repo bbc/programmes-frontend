@@ -88,7 +88,7 @@ class PodcastController extends BaseController
         switch ($coreEntity->getType()) {
             case 'collection':
                 $soundsSubscribeUrl = $router->generate('sounds_collection', [
-                    'collectionPid' => $coreEntity->getPid(),
+                    'collectionBrandPid' => $coreEntity->getTleo()->getPid(),
                 ], UrlGeneratorInterface::ABSOLUTE_URL);
                 break;
             default:
