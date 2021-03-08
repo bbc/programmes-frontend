@@ -149,10 +149,14 @@
                         {% if genre is defined %}
                         <div>
                             <div class="icon-box br-box-page">
-                                {% set href = genre.getUrlKey() == "childrens"
-                                    ? path('podcast_childrens_podcasts')
-                                    : path('podcast_sounds_podcasts')
-                                %}
+                                {% set genreValue = genre.getUrlKey() %}
+                                {% if genreValue == 'childrens' %}
+                                    {% set href = path('podcast_childrens_podcasts') %}
+                                {% elseif genreValue == 'learning' %}
+                                    {% set href = path('podcast_learning_podcasts') %}
+                                {% else %}
+                                    {% set href = path('podcast_sounds_podcasts') %}
+                                {% endif %}
                                 <a class="icon-box__link br-box-page__link br-page-link-onbg015 br-page-linkhover-onbg015--hover" href="{{ href }}">
                                     <i class="icon-box__icon gelicon gelicon--podcast"></i>
                                     <div class="icon-box__hgroup">
