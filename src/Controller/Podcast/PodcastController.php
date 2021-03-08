@@ -75,7 +75,7 @@ class PodcastController extends BaseController
 
         $promotions = $promotionsService->findAllActivePromotionsByEntityGroupedByType($coreEntity);
         $genre = null;
-        $otherPodcastsUrl = null;
+        $relatedPodcastsUrl = null;
 
         if ($programme) {
             $genres = $programme->getGenres();
@@ -83,16 +83,17 @@ class PodcastController extends BaseController
         }
         if ($genre) {
             $genre = $genre->getTopLevel();
+
             switch ($genre->getUrlKey()) {
-              case 'childrens':
-                  $otherPodcastsUrl = $router->generate('podcast_childrens_podcasts', [], UrlGeneratorInterface::ABSOLUTE_URL);
-                  break;
-              case 'learning':
-                  $otherPodcastsUrl = $router->generate('podcast_learning_podcasts', [], UrlGeneratorInterface::ABSOLUTE_URL);
-                  break;
-              default:
-                  $otherPodcastsUrl = $router->generate('podcast_sounds_podcasts', [], UrlGeneratorInterface::ABSOLUTE_URL);
-          }
+                case 'childrens':
+                    $relatedPodcastsUrl = $router->generate('podcast_childrens_podcasts', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    break;
+                case 'learning':
+                    $relatedPodcastsUrl = $router->generate('podcast_learning_podcasts', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    break;
+                default:
+                    $relatedPodcastsUrl = $router->generate('podcast_sounds_podcasts', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            }
         }
 
         $schema = $this->getSchema($structuredDataHelper, $programme, $downloadableVersions, $coreEntity);
@@ -125,7 +126,7 @@ class PodcastController extends BaseController
             'promotions' => $promotions,
             'genre' => $genre,
             'soundsSubscribeUrl' => $soundsSubscribeUrl,
-            'podcastsUrl' => $otherPodcastsUrl
+            'relatedPodcastsUrl' => $relatedPodcastsUrl,
         ]);
     }
 
