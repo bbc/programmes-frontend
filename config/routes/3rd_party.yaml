@@ -84,6 +84,11 @@ podcast_childrens_podcasts:
     defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     schemes: [https]
 
+podcast_learning_podcasts:
+    path: /sounds/category/learning
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
+    schemes: [https]
+
 podcast_sounds_podcasts:
     path: /sounds/category/podcasts
     defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
