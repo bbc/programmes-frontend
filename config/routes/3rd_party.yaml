@@ -56,13 +56,13 @@ playspace_play:
     requirements: { pid: '[0-9b-df-hj-np-tv-z]{8,15}' }
 
 sounds_brand:
-    path: /sounds/play/brand:{brandPid}
+    path: /sounds/brand/{brandPid}
     defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements:
         brandPid: '[0-9b-df-hj-np-tv-z]{8,15}'
 
 sounds_collection:
-    path: /sounds/play/collection:{collectionPid}
+    path: /sounds/brand/{collectionBrandPid}
     defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     requirements:
         collectionPid: '[0-9b-df-hj-np-tv-z]{8,15}'
@@ -79,9 +79,18 @@ podcast_download_low:
     defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     schemes: [https]
 
+podcast_childrens_podcasts:
+    path: /sounds/category/childrens
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
+    schemes: [https]
 
-podcast_other_podcasts:
-    path: /radio/categories/redirect
+podcast_learning_podcasts:
+    path: /sounds/category/learning
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
+    schemes: [https]
+
+podcast_sounds_podcasts:
+    path: /sounds/category/podcasts
     defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction, route: '' }
     schemes: [https]
 

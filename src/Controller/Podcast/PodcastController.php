@@ -75,12 +75,25 @@ class PodcastController extends BaseController
 
         $promotions = $promotionsService->findAllActivePromotionsByEntityGroupedByType($coreEntity);
         $genre = null;
+        $relatedPodcastsUrl = null;
+
         if ($programme) {
             $genres = $programme->getGenres();
             $genre = reset($genres);
         }
         if ($genre) {
             $genre = $genre->getTopLevel();
+
+            switch ($genre->getUrlKey()) {
+                case 'childrens':
+                    $relatedPodcastsUrl = $router->generate('podcast_childrens_podcasts', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    break;
+                case 'learning':
+                    $relatedPodcastsUrl = $router->generate('podcast_learning_podcasts', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    break;
+                default:
+                    $relatedPodcastsUrl = $router->generate('podcast_sounds_podcasts', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            }
         }
 
         $schema = $this->getSchema($structuredDataHelper, $programme, $downloadableVersions, $coreEntity);
@@ -88,7 +101,7 @@ class PodcastController extends BaseController
         switch ($coreEntity->getType()) {
             case 'collection':
                 $soundsSubscribeUrl = $router->generate('sounds_collection', [
-                    'collectionPid' => $coreEntity->getPid(),
+                    'collectionBrandPid' => $coreEntity->getTleo()->getPid(),
                 ], UrlGeneratorInterface::ABSOLUTE_URL);
                 break;
             default:
@@ -113,6 +126,7 @@ class PodcastController extends BaseController
             'promotions' => $promotions,
             'genre' => $genre,
             'soundsSubscribeUrl' => $soundsSubscribeUrl,
+            'relatedPodcastsUrl' => $relatedPodcastsUrl,
         ]);
     }
 
