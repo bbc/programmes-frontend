@@ -191,7 +191,15 @@ class EpisodeController extends BaseController
             'b006mgyl', // BBC News
             'm000lxp1', // Powering Britain
             'b08s3bgz',  // Impossible
+            // https://jira.dev.bbc.co.uk/browse/DATCAP-182 (second batch)
+            'p06kyljg', // That Peter Crouch Podcast
+            'b0072q60', // Guy Garvey's Finest Hour
+            'p089sfrz', // Grounded with Louis Theroux
+            'm0006d5v', // Radio 1's Party Anthems
+            'b00snr0w', // The Infinite Monkey Cage
+            'p02nrsln', // Football Daily
         ];
+
         if (in_array($episode->getTleo()->getPid(), $noIndexBrands)) {
             $this->metaNoIndex = true;
         }
