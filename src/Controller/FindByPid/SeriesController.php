@@ -38,6 +38,19 @@ class SeriesController extends BaseProgrammeContainerController
         Breadcrumbs $breadcrumbs
     ) {
         $this->setAtiContentLabels('series', 'series');
+        $noIndexBrands = [
+            'b006pfjx', // North West Tonight
+            'b007t9y1', // Match of the Day
+            'p00yzlr0', // Line of Duty
+            'p070npjv', // Fleabag
+            'b006v5y2', // Saturday Kitchen
+            'b006mgyl', // BBC News
+            'm000lxp1', // Powering Britain
+            'b08s3bgz',  // Impossible
+        ];
+        if (in_array($programme->getTleo()->getPid(), $noIndexBrands)) {
+            $this->metaNoIndex = true;
+        }
         return parent::__invoke(
             $presenterFactory,
             $request,
